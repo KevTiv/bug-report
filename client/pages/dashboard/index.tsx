@@ -1,12 +1,41 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect } from 'react'
 import { Logout } from '../../components/buttons'
 import styles from '../../styles/Home.module.scss'
 
 import supabase from '../../supabaseLib'
 
 const Dashboard: NextPage = ({ user }:any) => {
+  useEffect(()=>{
+
+    fetch(`/api/user/${user.id}`,{
+      method: 'GET',
+      // headers: { 'Content-Type': 'application/json' },
+      // credentials: 'same-origin',
+      // body: JSON.stringify(user.id)
+    }).then(res=>{
+      
+
+      if(!res){
+        const currUser={
+          id: user.id,
+          email: user.email,
+          authBy: user.app_metadata.provider
+        }
+
+        fetch('/api/user/post',{
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify(currUser)
+        })
+      }
+    })
+    
+
+  },[])
   return (
     <div className={styles.container}>
       <Head>
@@ -41,12 +70,12 @@ export default Dashboard
 
 export async function getServerSideProps({ req }:any) {
   const { user } = await supabase.auth.api.getUserByCookie(req)
-
+  
   if (!user) {
     // If no user, redirect to index.
     return { props: {}, redirect: { destination: '/', permanent: false } }
   }
-
   // If there is a user, return it.
   return { props: { user } }
 }
+

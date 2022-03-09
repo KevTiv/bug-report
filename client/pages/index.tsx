@@ -44,13 +44,14 @@ const Home: NextPage = () => {
             body: JSON.stringify({ event, session }),
           }).then((res) => {
             res.json()
+            
             router.push('/dashboard')
           })
 
         }
       )
       return () => {
-        authListener?.unsubscribe()
+        authListener!.unsubscribe()
       }
     }, []);
 

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^3.10.0",
     "@supabase/supabase-js": "^1.31.1",
     "@supabase/ui": "^0.36.4",
     "next": "12.1.0",
@@ -24,7 +25,7 @@
     "@types/react": "17.0.39",
     "eslint": "8.10.0",
     "eslint-config-next": "12.1.0",
-    "typescript": "4.6.2",
-    "prisma": "^3.10.0"
+    "prisma": "^3.10.0",
+    "typescript": "4.6.2"
   }
 }

@@ -4,8 +4,12 @@ import Image from 'next/image'
 import styles from '../../styles/Home.module.scss'
 
 import Form from '../../components/forms'
+import supabase from '../../supabaseLib'
 
-const NewBug: NextPage = () => {
+
+
+const NewBug: NextPage = ({user}:any) => {
+  
   return (
     <div className={styles.container}>
       <Head>
@@ -15,7 +19,8 @@ const NewBug: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <Form isNewBug={true} />
+        {/* <h1>{user.email}</h1> */}
+        <Form isNewBug={true} author={user.id}/>
       </main>
 
       <footer className={styles.footer}>
@@ -35,3 +40,14 @@ const NewBug: NextPage = () => {
 }
 
 export default NewBug
+
+export async function getServerSideProps({ req }:any) {
+  const { user } = await supabase.auth.api.getUserByCookie(req)
+  
+  if (!user) {
+    // If no user, redirect to index.
+    return { props: {}, redirect: { destination: '/', permanent: false } }
+  }
+  // If there is a user, return it.
+  return { props: { user } }
+}
