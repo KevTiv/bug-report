@@ -1,0 +1,27 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("NEXT_PUBLIC_DATABASE_URL")
+}
+
+//Active bug table
+model Current_bug {
+  id                 Int      @id @default(autoincrement())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  title              String   @db.VarChar(255)
+  description        String?  @db.VarChar(650)
+  location           String   @db.VarChar(255)
+  processToReplicate String   @db.VarChar(650)
+  priorityStatus     String   @db.VarChar(50)
+  author             String?  @db.VarChar(150)
+  isResolved         Boolean  @default(false)
+  resolvedBy         String?  @db.VarChar(150)
+  url                String?  @db.VarChar(255)
+}
