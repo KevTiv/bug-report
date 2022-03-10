@@ -1,9 +1,21 @@
+import { PrismaClient } from '@prisma/client'
+import { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
+import {useRouter} from 'next/router'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import styles from '../../styles/Home.module.scss'
+import supabase from '../../supabaseLib'
+import { bugType } from '../../type'
 
-const History: NextPage = () => {
+const History: NextPage = ({bugsList}:any) => {
+  const [bugs,setBugs] = useState<bugType[]>()
+  const router = useRouter()
+
+  useEffect(() => {
+    setBugs(JSON.parse(bugsList))
+  },[])
   return (
     <div className={styles.container}>
       <Head>
@@ -14,6 +26,41 @@ const History: NextPage = () => {
 
       <main className={styles.main}>
         <h1>History</h1>
+        <table>
+          {/* Headers */}
+          <tr>
+            <th>Created</th>
+            <th>Author ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Resolved</th>
+            <th>Priority</th>
+            <th>More Action</th>
+          </tr>
+          {/* Body */}
+          {
+            bugs?.map(bug=>{
+              return(
+                <>
+                  <tr key={bug.id}>
+                    <td>{bug?.createdAt!.substring(0,10)}</td>
+                    <td>{bug?.author}</td>
+                    <td>{bug?.title}</td>
+                    <td>{bug?.description}</td>
+                    <td>{bug?.isResolved ? 'Yes' : 'No'}</td>
+                    <td>{bug?.priorityStatus}</td>
+                    <td>
+                      <button onClick={()=>router.push(`/viewBug/${bug.id}`)}>View more</button>
+                      <button>Modify</button>
+                      <button>Delete</button>
+                    </td>
+                  </tr>
+                </>
+              )
+            })
+          }
+        </table>
+
       </main>
 
       <footer className={styles.footer}>
@@ -33,3 +80,16 @@ const History: NextPage = () => {
 }
 
 export default History
+
+export async function getServerSideProps({ req }:any) {
+  const { user } = await supabase.auth.api.getUserByCookie(req)
+  if (!user) {
+    // If no user, redirect to index.
+    return { props: {}, redirect: { destination: '/', permanent: false } }
+  }
+  const prisma = new PrismaClient()
+  const bugsList = JSON.stringify(await prisma.current_bug.findMany()) 
+  return{
+    props:{ bugsList }
+  }
+}

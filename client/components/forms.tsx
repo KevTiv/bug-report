@@ -1,72 +1,53 @@
+import { AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
-import prisma from "../prisma"
-import supabase from "../supabaseLib"
-
-type formFieldTypes = {
-    isNewBug? : boolean, 
-    id? : number,
-    title? : string,
-    description? : string,
-    location? : string,
-    processToReplicate? : string,
-    priorityStatus? : string,
-    author? : string,
-    isResolved? : boolean,
-    resolvedBy? : string,
-    url? : string,
-
-    currUserMetadata? :{ 
-        id? : string,
-        email? : string,
-        authBy? : string,
-        numbOfRaisedBugAllowed? : number,
-        allowedToModifyBugReport? : boolean,
-        allowedToDeleteBugReport? : boolean,
-    }
-}
+import { useRouter } from 'next/router'
+import { formFieldTypes } from "../type"
 
 const Forms = ({isNewBug, id, title, description, location, processToReplicate, priorityStatus,
-    author, isResolved, resolvedBy, url, currUserMetadata }:formFieldTypes ) => {
+    author, isResolved, resolvedBy, url }:formFieldTypes ) => {
     
-    //TODO change fetch with Axios...
-    
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<formFieldTypes>();
+    const axios = require('axios')
+    const router = useRouter();
+    const { register, handleSubmit, formState: { errors } } = useForm<formFieldTypes>();
     const onSubmitModifyBugReport: SubmitHandler<formFieldTypes> = data => console.log(data);
+
+    const [currUserMetadata, setCurrUserMetadata] = useState<any>();
     
-    const handleNewBugFormSubmit = (data:formFieldTypes)=>{
-        if(currUserMetadata!.numbOfRaisedBugAllowed! > 0){
-            console.log('new bug report begin', data);
+    const handleNewBugFormSubmit = async(data:formFieldTypes)=>{
+        if(currUserMetadata.numbOfRaisedBugAllowed > 0){
             let newBugReport = {
-                author: author,
                 title: data.title,
                 description: data.description,
+                location: data.location,
                 processToReplicate: data.processToReplicate,
                 priorityStatus: data.priorityStatus,
-                isResolved: data.isResolved,
+                author: author,
+                isResolved: JSON.parse(`${data.isResolved}`)
             }
-            fetch('/api/bug/post',{
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'same-origin',
-                body: JSON.stringify(newBugReport)
-            }).then(()=>{
+            await axios.post('/api/bug/post',newBugReport).then(async()=>{
                 let currUserMetadataUpdate={
-                    id: currUserMetadata!.id,
-                    numbOfRaisedBugAllowed: (currUserMetadata!.numbOfRaisedBugAllowed! - 1)
+                    id: currUserMetadata.id,
+                    email: currUserMetadata.email,
+                    authBy: currUserMetadata.authBy,
+                    numbOfRaisedBugAllowed: (currUserMetadata.numbOfRaisedBugAllowed - 1),
+                    allowedToModifyBugReport: currUserMetadata.allowedToModifyBugReport,
+                    allowedToDeleteBugReport: currUserMetadata.allowedToDeleteBugReport,
                 }
-                fetch('/api/user/post',{
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    credentials: 'same-origin',
-                    body: JSON.stringify(currUserMetadataUpdate)
-                })
-
+                await axios.put('/api/user/put',currUserMetadataUpdate).then(()=> router.reload())
             })
         }
-        
     }
     const onSubmitNewBugReport: SubmitHandler<formFieldTypes> = data => {handleNewBugFormSubmit(data)};
+
+    useEffect(() => {
+        const getUserMetadata =async ()=> {
+            await axios.get(`/api/user/${author}`).then((res:AxiosResponse)=>{
+                setCurrUserMetadata(res.data)
+            })
+        }
+        getUserMetadata()
+    },[])
 
   return (
     <>
@@ -76,7 +57,7 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
             <div>
                 <label>
                     Author
-                    <input type="text" placeholder={author} disabled/>
+                    <input type="text" placeholder={author} value={author} disabled {...register("author")}/>
                 </label>
                 <label>
                     Title
@@ -136,17 +117,3 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
 }
 
 export default Forms
-
-export async function getServerSideProps({ req }:any) {
-  const { user } = await supabase.auth.api.getUserByCookie(req)
-  
-  if (!user) {
-    // If no user, redirect to index.
-    return { props: {}, redirect: { destination: '/', permanent: false } }
-  }
-  
-  const currUserMetadata = fetch(`/api/user/${user.id}`);
-  
-  // If there is a user, return it.
-  return { props: { currUserMetadata } }
-}

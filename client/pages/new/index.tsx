@@ -20,7 +20,7 @@ const NewBug: NextPage = ({user}:any) => {
 
       <main className={styles.main}>
         {/* <h1>{user.email}</h1> */}
-        <Form isNewBug={true} author={user.id}/>
+        <Form isNewBug={true} author={user.id} />
       </main>
 
       <footer className={styles.footer}>

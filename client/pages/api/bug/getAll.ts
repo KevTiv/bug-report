@@ -6,9 +6,6 @@ import prisma from '../../../prisma'
 // Required fields in body: title, authorEmail
 // Optional fields in body: content
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-  console.log('req=> ',req)
-  const result = await prisma.current_bug.create({
-    data: req.body,
-  })
+  const result = await prisma.current_bug.findMany()
   res.json(result)
 }
