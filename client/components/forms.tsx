@@ -1,21 +1,30 @@
 import { AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
+import { ErrorMessage } from '@hookform/error-message';
 import { useRouter } from 'next/router'
 import { formFieldTypes } from "../type"
+import supabase from "../supabaseLib";
+
+    //TODO change resolved by to a dropdown selection menu with all the user of the app
 
 const Forms = ({isNewBug, id, title, description, location, processToReplicate, priorityStatus,
-    author, isResolved, resolvedBy, url }:formFieldTypes ) => {
+    author, isResolved, resolvedBy, url, allUser, currUserMetadata}:formFieldTypes ) => {
     
     const axios = require('axios')
-    const router = useRouter();
-    const { register, handleSubmit, formState: { errors } } = useForm<formFieldTypes>();
-    const onSubmitModifyBugReport: SubmitHandler<formFieldTypes> = data => console.log(data);
+    const router = useRouter()
+    const { register, handleSubmit, formState: { errors } } = useForm<formFieldTypes>()
 
-    const [currUserMetadata, setCurrUserMetadata] = useState<any>();
-    
+    // const [currUserMetadata, setCurrUserMetadata] = useState<any>()
+
     const handleNewBugFormSubmit = async(data:formFieldTypes)=>{
-        if(currUserMetadata.numbOfRaisedBugAllowed > 0){
+        if(currUserMetadata && currUserMetadata.numbOfRaisedBugAllowed! > 0){
+            // let imgUrl
+            // if(data.file){
+            //     uploadImgFile(data.file)
+            //     imgUrl = getImgUrl(data.file)
+            //     console.log(imgUrl)
+            // }
             let newBugReport = {
                 title: data.title,
                 description: data.description,
@@ -23,31 +32,78 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 processToReplicate: data.processToReplicate,
                 priorityStatus: data.priorityStatus,
                 author: author,
-                isResolved: JSON.parse(`${data.isResolved}`)
+                isResolved: JSON.parse(`${data.isResolved}`),
+                // url: imgUrl
             }
             await axios.post('/api/bug/post',newBugReport).then(async()=>{
                 let currUserMetadataUpdate={
-                    id: currUserMetadata.id,
-                    email: currUserMetadata.email,
-                    authBy: currUserMetadata.authBy,
-                    numbOfRaisedBugAllowed: (currUserMetadata.numbOfRaisedBugAllowed - 1),
-                    allowedToModifyBugReport: currUserMetadata.allowedToModifyBugReport,
-                    allowedToDeleteBugReport: currUserMetadata.allowedToDeleteBugReport,
+                    id: currUserMetadata!.id,
+                    email: currUserMetadata!.email,
+                    authBy: currUserMetadata!.authBy,
+                    numbOfRaisedBugAllowed: (currUserMetadata!.numbOfRaisedBugAllowed! - 1),
+                    allowedToModifyBugReport: currUserMetadata!.allowedToModifyBugReport,
+                    allowedToDeleteBugReport: currUserMetadata!.allowedToDeleteBugReport,
                 }
-                await axios.put('/api/user/put',currUserMetadataUpdate).then(()=> router.reload())
+                await axios.put('/api/user/put',currUserMetadataUpdate).then(()=> router.push('/dashboard'))
             })
         }
     }
     const onSubmitNewBugReport: SubmitHandler<formFieldTypes> = data => {handleNewBugFormSubmit(data)};
 
-    useEffect(() => {
-        const getUserMetadata =async ()=> {
-            await axios.get(`/api/user/${author}`).then((res:AxiosResponse)=>{
-                setCurrUserMetadata(res.data)
+    const handleModifyBugFormSubmit = async(data:formFieldTypes)=>{
+        if(currUserMetadata && currUserMetadata.allowedToModifyBugReport){
+            let modifiedBugReport = {
+                id: id,
+                title: data.title,
+                description: data.description,
+                location: data.location,
+                processToReplicate: data.processToReplicate,
+                priorityStatus: data.priorityStatus,
+                author: author,
+                resolvedBy: data.resolvedBy,
+                isResolved: JSON.parse(`${data.isResolved}`)
+            }
+            await axios.put('/api/bug/put',modifiedBugReport).then(async()=>{
+                let currUserMetadataUpdate={
+                    id: currUserMetadata!.id,
+                    email: currUserMetadata!.email,
+                    authBy: currUserMetadata!.authBy,
+                    numbOfRaisedBugAllowed: (currUserMetadata!.numbOfRaisedBugAllowed! - 1),
+                    allowedToModifyBugReport: currUserMetadata!.allowedToModifyBugReport,
+                    allowedToDeleteBugReport: currUserMetadata!.allowedToDeleteBugReport,
+                }
+                await axios.put('/api/user/put',currUserMetadataUpdate).then(()=> router.push('/dashboard'))
             })
         }
-        getUserMetadata()
-    },[])
+    }
+    const onSubmitModifyBugReport: SubmitHandler<formFieldTypes> = data => handleModifyBugFormSubmit(data);
+   
+    const uploadImgFile = async(file: File)=>{
+        console.log('here')
+        const maxImgFileSize = 5 //MB
+        if(file.size <= (maxImgFileSize * 1024 * 1024)){
+            
+            const { data, error } = await supabase
+            .storage
+            .from('bug-report-screenshot')
+            .upload(`/${file.name}.${file.type}`, file, {
+                cacheControl: '3600',
+                upsert: false
+            })
+            if(error) console.error(error)
+        }else{
+            alert(`This image is too large. Maximum size:${maxImgFileSize} MB`)
+        }
+    }
+    
+    const getImgUrl= async(file:File)=>{
+        const { publicURL, error } = supabase
+        .storage
+        .from('bug-report-screenshot')
+        .getPublicUrl(`/${file.name}.${file.type}`)
+        if(error) console.error(error)
+        return publicURL
+    }
 
   return (
     <>
@@ -61,27 +117,31 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 </label>
                 <label>
                     Title
-                    <input type="text" {...register("title")}/>
+                    <input type="text" {...register("title", { required: "This is required" })} placeholder={title? title : ''}/>
+                    <ErrorMessage errors={errors} name="title" />
                 </label>
             </div>
             <div>
                 <label>
                     Location
-                    <textarea {...register("location")}/>
+                    <textarea {...register("location", { required: "This is required" })} placeholder={location? location : ''}/>
+                    <ErrorMessage errors={errors} name="location" />
                 </label>
                 <label>
                     Description
-                    <textarea {...register("description")}/>
+                    <textarea {...register("description", { required: "This is required" })} placeholder={description? description : ''}/>
+                    <ErrorMessage errors={errors} name="description" />
                 </label>
                  <label>
                     How to replicate
-                    <textarea {...register("processToReplicate")}/>
+                    <textarea {...register("processToReplicate", { required: "This is required" })} placeholder={processToReplicate? processToReplicate : ''}/>
+                    <ErrorMessage errors={errors} name="processToReplicate" />
                 </label>
             </div>
             <div>
                 <label>
                     Priority Status
-                    <select id="priorityStatus" {...register("priorityStatus")}>
+                    <select id="priorityStatus" {...register("priorityStatus")} placeholder={priorityStatus? priorityStatus : ''}>
                         <option value="low">LOW</option>
                         <option value="normal">NORMAL</option>
                         <option value="high">HIGH</option>
@@ -89,7 +149,7 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 </label>
                 <label>
                     Resolved
-                    <select id="isBugResolved" {...register("isResolved")}>
+                    <select id="isBugResolved" {...register("isResolved")} placeholder={isResolved? 'Bug is resolved' : 'Bug is not Resolved'}>
                         <option value="false">Bug is not Resolved</option>
                         <option value="true">Bug is resolved</option>
                     </select>
@@ -97,9 +157,18 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 <label>
                     Resolved By
                     {isNewBug ? 
-                        <input type="text" disabled value="" {...register("resolvedBy")}/> 
+                        <input type="text" disabled {...register("resolvedBy")}/> 
                     : 
-                        <input type="text" value={author} {...register("resolvedBy")}/>
+                        // <input type="text" {...register("resolvedBy")} placeholder={resolvedBy}/> //allUser
+                        <select id="resolvedBy" {...register("resolvedBy")} placeholder={resolvedBy}>
+                            {allUser?.map((user, index)=>{
+                                return(
+                                    <>
+                                        <option key={index} value={user.id}>{user.id}</option>
+                                    </>
+                                )
+                            })}
+                        </select>
                     }
                     
                 </label>
@@ -107,7 +176,7 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
             <div>
                 <label>
                     Upload Image
-                    <input type="file"  />
+                    <input type="file" accept=".jpg, .jpeg, .png, .webp" {...register("file")}/>
                 </label>
             </div>
             <button>Submit</button>

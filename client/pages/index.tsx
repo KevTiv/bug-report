@@ -7,7 +7,7 @@ import styles from '../styles/Home.module.scss'
 import useSWR from 'swr'
 import { Auth, Card, Typography, Space, Button, Icon } from '@supabase/ui'
 
-import {Login, Logout} from '../components/buttons'
+import {Login, Logout} from '../components/logButtons'
 import { useEffect, useState } from 'react'
 import supabase from '../supabaseLib'
 import Loading from '../components/loading'

@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from '../../prisma'
 import { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
 import {useRouter} from 'next/router'
@@ -9,10 +9,10 @@ import styles from '../../styles/Home.module.scss'
 import supabase from '../../supabaseLib'
 import { bugType } from '../../type'
 
-const History: NextPage = ({bugsList}:any) => {
+const History: NextPage = ({bugsList, currUserPrivileges}:any) => {
   const [bugs,setBugs] = useState<bugType[]>()
   const router = useRouter()
-
+  const axios = require('axios')
   useEffect(() => {
     setBugs(JSON.parse(bugsList))
   },[])
@@ -51,8 +51,8 @@ const History: NextPage = ({bugsList}:any) => {
                     <td>{bug?.priorityStatus}</td>
                     <td>
                       <button onClick={()=>router.push(`/viewBug/${bug.id}`)}>View more</button>
-                      <button>Modify</button>
-                      <button>Delete</button>
+                      <button onClick={()=>currUserPrivileges.allowedToDeleteBugReport ? router.push(`/modify/${bug.id}`) : alert('You are not allowed to modify a bug report')}>Modify</button>
+                      <button onClick={()=>currUserPrivileges.allowedToDeleteBugReport ? axios.delete(`/api/bug/delete/${bug.id}`).then(()=>router.push('/dashboard')) : alert('You are not allowed to delete a bug report')}>Delete</button>
                     </td>
                   </tr>
                 </>
@@ -87,9 +87,20 @@ export async function getServerSideProps({ req }:any) {
     // If no user, redirect to index.
     return { props: {}, redirect: { destination: '/', permanent: false } }
   }
-  const prisma = new PrismaClient()
+  // The JSON is stringify because of NEXTJS restriction on passing JSON DateTime
   const bugsList = JSON.stringify(await prisma.current_bug.findMany()) 
+
+  const currUserPrivileges = await prisma.user.findUnique({
+    where:{
+      id: user.id
+    },
+    select:{
+      allowedToModifyBugReport: true,
+      allowedToDeleteBugReport: true
+    }
+  })
+  
   return{
-    props:{ bugsList }
+    props:{ bugsList, currUserPrivileges }
   }
 }

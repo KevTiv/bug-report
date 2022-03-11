@@ -11,6 +11,8 @@ export type formFieldTypes = {
     resolvedBy? : string,
     url? : string,
     currUserMetadata? :userMetadataType
+    allUser? : userMetadataType[],
+    // currUser
 }
 export type userMetadataType={
     id? : string,
@@ -31,5 +33,6 @@ export type bugType={
     isResolved? : boolean,
     resolvedBy? : string,
     createdAt? : string,
+    updatedAt? : string,
     url? : string,
 }

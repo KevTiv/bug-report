@@ -7,8 +7,9 @@ import prisma from '../../../prisma'
 // Optional fields in body: content
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const result = await prisma.current_bug.update({
-    where: {id: req.body.id},
+    where: {id: parseInt(req.body.id)},
     data: req.body,
   })
   res.json(result)
+  
 }

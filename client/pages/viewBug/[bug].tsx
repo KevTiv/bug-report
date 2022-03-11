@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import prisma from '../../prisma'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
@@ -10,7 +10,8 @@ import { bugType } from '../../type'
 const viewBug:NextPage = ({bugInfo}:any) => {
     const [bug, setBug] = useState<bugType>()
     useEffect(() => {
-        setBug(JSON.parse(bugInfo))
+      setBug(JSON.parse(bugInfo))
+        
     },[])
 
   return (
@@ -24,36 +25,46 @@ const viewBug:NextPage = ({bugInfo}:any) => {
       <main className={styles.main}>
         <h1>{bug?.title} Report</h1>
         <div>
-            <div>
-                <h2>Description</h2>
-                <p>{bug?.description}</p>
-            </div>
-            <div>
-                <h2>Location</h2>
-                <p>{bug?.location}</p>
-            </div>
-            <div>
-                <h2>How to replicate</h2>
-                <p>{bug?.processToReplicate}</p>
-            </div>
-        </div>
-        <div>
-            <div>
-                <h2>Author</h2>
-                <p>{bug?.author}</p>
-            </div>
-            <div>
-                <h2>Resolved</h2>
-                <p>{bug?.isResolved ? 'Yes' : 'No'}</p>
-            </div>
-            <div>
-                <h2>Priority</h2>
-                <p>{bug?.priorityStatus}</p>
-            </div>
-            <div>
-                <h2>Resolved by</h2>
-                <p>{bug?.resolvedBy ? bug?.resolvedBy  : 'No one resolved this bug yet'}</p>
-            </div>
+          <div>
+              <div>
+                  <h2>Description</h2>
+                  <p>{bug?.description}</p>
+              </div>
+              <div>
+                  <h2>Location</h2>
+                  <p>{bug?.location}</p>
+              </div>
+              <div>
+                  <h2>How to replicate</h2>
+                  <p>{bug?.processToReplicate}</p>
+              </div>
+          </div>
+          <div>
+              <div>
+                  <h2>Author</h2>
+                  <p>{bug?.author}</p>
+              </div>
+              <div>
+                  <h2>Resolved</h2>
+                  <p>{bug?.isResolved ? 'Yes' : 'No'}</p>
+              </div>
+              <div>
+                  <h2>Priority</h2>
+                  <p>{bug?.priorityStatus}</p>
+              </div>
+              <div>
+                  <h2>Resolved by</h2>
+                  <p>{bug?.resolvedBy ? bug?.resolvedBy  : 'No one resolved this bug yet'}</p>
+              </div>
+              <div>
+                  <h2>Reported on</h2>
+                  <p>{bug?.createdAt}</p>
+              </div>
+              <div>
+                  <h2>Last modification</h2>
+                  <p>{bug?.updatedAt}</p>
+              </div>
+          </div>
         </div>
       </main>
 
@@ -78,19 +89,20 @@ export default viewBug
 export async function getServerSideProps({ req, query }:any) {
     
   const { user } = await supabase.auth.api.getUserByCookie(req)
-  const prisma = new PrismaClient()
   
- 
+  if (!user) {
+    // If no user, redirect to index.
+    return { props: {}, redirect: { destination: '/', permanent: false } }
+  }
+
+  //info about bug
   const bugInfo = JSON.stringify(await prisma.current_bug?.findUnique({
       where:{
           id: parseInt(query.bug)
       }
   })) 
-  if (!user) {
-    // If no user, redirect to index.
-    return { props: {}, redirect: { destination: '/', permanent: false } }
-  }
   
+
   return{
     props:{ bugInfo }
   }

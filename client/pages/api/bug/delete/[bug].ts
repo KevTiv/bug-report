@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import prisma from '../../../prisma'
+import prisma from '../../../../prisma'
 
 
 // POST /api/post
@@ -7,7 +7,8 @@ import prisma from '../../../prisma'
 // Optional fields in body: content
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
   const result = await prisma.current_bug.delete({
-    where:{ id:req.body},
+    where:{ id: parseInt(req.query.bug as string)},
   })
   res.json(result)
+  
 }
