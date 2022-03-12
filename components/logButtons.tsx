@@ -1,6 +1,4 @@
 import { useRouter } from 'next/router'
-
-import {useState } from 'react'
 import supabase from '../supabaseLib'
 
 const Login = () => {

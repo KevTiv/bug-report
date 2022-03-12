@@ -1,5 +1,4 @@
 import prisma from '../../prisma'
-import { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
 import {useRouter} from 'next/router'
 import Head from 'next/head'
@@ -8,11 +7,11 @@ import { useEffect, useState } from 'react'
 import styles from '../../styles/Home.module.scss'
 import supabase from '../../supabaseLib'
 import { bugType } from '../../type'
+import { DeleteButton, ModifyButton, ViewButton } from '../../components/actionButtons'
 
 const History: NextPage = ({bugsList, currUserPrivileges}:any) => {
   const [bugs,setBugs] = useState<bugType[]>()
-  const router = useRouter()
-  const axios = require('axios')
+  
   useEffect(() => {
     setBugs(JSON.parse(bugsList))
   },[])
@@ -50,9 +49,9 @@ const History: NextPage = ({bugsList, currUserPrivileges}:any) => {
                     <td>{bug?.isResolved ? 'Yes' : 'No'}</td>
                     <td>{bug?.priorityStatus}</td>
                     <td>
-                      <button onClick={()=>router.push(`/viewBug/${bug.id}`)}>View more</button>
-                      <button onClick={()=>currUserPrivileges.allowedToDeleteBugReport ? router.push(`/modify/${bug.id}`) : alert('You are not allowed to modify a bug report')}>Modify</button>
-                      <button onClick={()=>currUserPrivileges.allowedToDeleteBugReport ? axios.delete(`/api/bug/delete/${bug.id}`).then(()=>router.push('/dashboard')) : alert('You are not allowed to delete a bug report')}>Delete</button>
+                      <ViewButton   bugId={bug.id}/>
+                      <ModifyButton bugId={bug.id} isPrivilege={currUserPrivileges.allowedToDeleteBugReport}/>
+                      <DeleteButton bugId={bug.id} isPrivilege={currUserPrivileges.allowedToDeleteBugReport}/>
                     </td>
                   </tr>
                 </>

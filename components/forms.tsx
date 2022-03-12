@@ -1,12 +1,9 @@
 import Image from 'next/image'
-import { AxiosResponse } from "axios"
-import { useEffect, useState } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
-import { ErrorMessage } from '@hookform/error-message';
+import { ErrorMessage } from '@hookform/error-message'
 import { useRouter } from 'next/router'
 import { formFieldTypes } from "../type"
-import supabase from "../supabaseLib";
-import {decode} from 'base64-arraybuffer'
+import supabase from "../supabaseLib"
     //TODO change resolved by to a dropdown selection menu with all the user of the app
 
 const Forms = ({isNewBug, id, title, description, location, processToReplicate, priorityStatus,

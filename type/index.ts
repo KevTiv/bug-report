@@ -36,3 +36,7 @@ export type bugType={
     updatedAt? : string,
     url? : string,
 }
+export type buttonType={
+    bugId? : number,
+    isPrivilege? : boolean
+}
