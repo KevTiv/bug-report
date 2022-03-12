@@ -4,8 +4,13 @@ import Image from 'next/image'
 import styles from '../../styles/Home.module.scss'
 
 import Form from '../../components/forms'
+import supabase from '../../supabaseLib'
+import prisma from '../../prisma'
 
-const NewBug: NextPage = () => {
+
+
+const NewBug: NextPage = ({user, currUser}:any) => {
+  
   return (
     <div className={styles.container}>
       <Head>
@@ -15,7 +20,8 @@ const NewBug: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <Form isNewBug={true} />
+        {/* <h1>{user.email}</h1> */}
+        <Form isNewBug={true} author={user.id} currUserMetadata={currUser}/>
       </main>
 
       <footer className={styles.footer}>
@@ -35,3 +41,19 @@ const NewBug: NextPage = () => {
 }
 
 export default NewBug
+
+export async function getServerSideProps({ req }:any) {
+  const { user } = await supabase.auth.api.getUserByCookie(req)
+  
+  if (!user) {
+    // If no user, redirect to index.
+    return { props: {}, redirect: { destination: '/', permanent: false } }
+  }
+  const currUser = await prisma.user?.findUnique({
+    where:{ 
+      id:user.id
+    }
+  })
+  // If there is a user, return it.
+  return { props: { user, currUser } }
+}

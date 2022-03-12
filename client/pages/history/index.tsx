@@ -1,9 +1,21 @@
+import prisma from '../../prisma'
+import { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
+import {useRouter} from 'next/router'
 import Head from 'next/head'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 import styles from '../../styles/Home.module.scss'
+import supabase from '../../supabaseLib'
+import { bugType } from '../../type'
 
-const History: NextPage = () => {
+const History: NextPage = ({bugsList, currUserPrivileges}:any) => {
+  const [bugs,setBugs] = useState<bugType[]>()
+  const router = useRouter()
+  const axios = require('axios')
+  useEffect(() => {
+    setBugs(JSON.parse(bugsList))
+  },[])
   return (
     <div className={styles.container}>
       <Head>
@@ -14,6 +26,41 @@ const History: NextPage = () => {
 
       <main className={styles.main}>
         <h1>History</h1>
+        <table>
+          {/* Headers */}
+          <tr>
+            <th>Created</th>
+            <th>Author ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Resolved</th>
+            <th>Priority</th>
+            <th>More Action</th>
+          </tr>
+          {/* Body */}
+          {
+            bugs?.map(bug=>{
+              return(
+                <>
+                  <tr key={bug.id}>
+                    <td>{bug?.createdAt!.substring(0,10)}</td>
+                    <td>{bug?.author}</td>
+                    <td>{bug?.title}</td>
+                    <td>{bug?.description}</td>
+                    <td>{bug?.isResolved ? 'Yes' : 'No'}</td>
+                    <td>{bug?.priorityStatus}</td>
+                    <td>
+                      <button onClick={()=>router.push(`/viewBug/${bug.id}`)}>View more</button>
+                      <button onClick={()=>currUserPrivileges.allowedToDeleteBugReport ? router.push(`/modify/${bug.id}`) : alert('You are not allowed to modify a bug report')}>Modify</button>
+                      <button onClick={()=>currUserPrivileges.allowedToDeleteBugReport ? axios.delete(`/api/bug/delete/${bug.id}`).then(()=>router.push('/dashboard')) : alert('You are not allowed to delete a bug report')}>Delete</button>
+                    </td>
+                  </tr>
+                </>
+              )
+            })
+          }
+        </table>
+
       </main>
 
       <footer className={styles.footer}>
@@ -33,3 +80,27 @@ const History: NextPage = () => {
 }
 
 export default History
+
+export async function getServerSideProps({ req }:any) {
+  const { user } = await supabase.auth.api.getUserByCookie(req)
+  if (!user) {
+    // If no user, redirect to index.
+    return { props: {}, redirect: { destination: '/', permanent: false } }
+  }
+  // The JSON is stringify because of NextJS restriction on passing JSON DateTime
+  const bugsList = JSON.stringify(await prisma.current_bug.findMany()) 
+
+  const currUserPrivileges = await prisma.user.findUnique({
+    where:{
+      id: user.id
+    },
+    select:{
+      allowedToModifyBugReport: true,
+      allowedToDeleteBugReport: true
+    }
+  })
+  
+  return{
+    props:{ bugsList, currUserPrivileges }
+  }
+}

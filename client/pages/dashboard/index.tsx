@@ -1,7 +1,10 @@
+import { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { Logout } from '../../components/buttons'
+import { useEffect } from 'react'
+import { Logout } from '../../components/logButtons'
+import prisma from '../../prisma'
 import styles from '../../styles/Home.module.scss'
 
 import supabase from '../../supabaseLib'
@@ -41,12 +44,27 @@ export default Dashboard
 
 export async function getServerSideProps({ req }:any) {
   const { user } = await supabase.auth.api.getUserByCookie(req)
-
+  const axios = require('axios')
   if (!user) {
     // If no user, redirect to index.
     return { props: {}, redirect: { destination: '/', permanent: false } }
   }
 
+  //Check if current user info are present in DB, if not store current user info
+  const isUserRegisteredInDB = await prisma.user.findUnique({
+    where:{ id: user.id}
+  })
+  if(!isUserRegisteredInDB){
+    await prisma.user.create({
+      data: {
+        id: user.id,
+        email: user.email,
+        authBy: user.app_metadata.provider
+      }
+    })
+  }
+  
   // If there is a user, return it.
   return { props: { user } }
 }
+
