@@ -87,7 +87,7 @@ export async function getServerSideProps({ req }:any) {
     // If no user, redirect to index.
     return { props: {}, redirect: { destination: '/', permanent: false } }
   }
-  // The JSON is stringify because of NEXTJS restriction on passing JSON DateTime
+  // The JSON is stringify because of NextJS restriction on passing JSON DateTime
   const bugsList = JSON.stringify(await prisma.current_bug.findMany()) 
 
   const currUserPrivileges = await prisma.user.findUnique({

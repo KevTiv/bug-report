@@ -25,6 +25,11 @@ const viewBug:NextPage = ({bugInfo}:any) => {
       <main className={styles.main}>
         <h1>{bug?.title} Report</h1>
         <div>
+            {bug?.url ? 
+              <div>
+                  <Image src={bug.url} alt={`${bug.title} screenshot`} layout="responsive" width="200" height="200"/>
+              </div>
+          :null}
           <div>
               <div>
                   <h2>Description</h2>

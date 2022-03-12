@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { AxiosResponse } from "axios"
 import { useEffect, useState } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
@@ -5,7 +6,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import { useRouter } from 'next/router'
 import { formFieldTypes } from "../type"
 import supabase from "../supabaseLib";
-
+import {decode} from 'base64-arraybuffer'
     //TODO change resolved by to a dropdown selection menu with all the user of the app
 
 const Forms = ({isNewBug, id, title, description, location, processToReplicate, priorityStatus,
@@ -19,12 +20,11 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
 
     const handleNewBugFormSubmit = async(data:formFieldTypes)=>{
         if(currUserMetadata && currUserMetadata.numbOfRaisedBugAllowed! > 0){
-            // let imgUrl
-            // if(data.file){
-            //     uploadImgFile(data.file)
-            //     imgUrl = getImgUrl(data.file)
-            //     console.log(imgUrl)
-            // }
+            let imgUrl
+            if(data.file){
+                uploadImgFile(data.file[0])
+                imgUrl = await getImgUrl(data.file[0])
+            }
             let newBugReport = {
                 title: data.title,
                 description: data.description,
@@ -33,19 +33,9 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 priorityStatus: data.priorityStatus,
                 author: author,
                 isResolved: JSON.parse(`${data.isResolved}`),
-                // url: imgUrl
+                url: imgUrl
             }
-            await axios.post('/api/bug/post',newBugReport).then(async()=>{
-                let currUserMetadataUpdate={
-                    id: currUserMetadata!.id,
-                    email: currUserMetadata!.email,
-                    authBy: currUserMetadata!.authBy,
-                    numbOfRaisedBugAllowed: (currUserMetadata!.numbOfRaisedBugAllowed! - 1),
-                    allowedToModifyBugReport: currUserMetadata!.allowedToModifyBugReport,
-                    allowedToDeleteBugReport: currUserMetadata!.allowedToDeleteBugReport,
-                }
-                await axios.put('/api/user/put',currUserMetadataUpdate).then(()=> router.push('/dashboard'))
-            })
+            await axios.post('/api/bug/post',newBugReport).then(updateCurrPrivilege())
         }
     }
     const onSubmitNewBugReport: SubmitHandler<formFieldTypes> = data => {handleNewBugFormSubmit(data)};
@@ -63,52 +53,59 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 resolvedBy: data.resolvedBy,
                 isResolved: JSON.parse(`${data.isResolved}`)
             }
-            await axios.put('/api/bug/put',modifiedBugReport).then(async()=>{
-                let currUserMetadataUpdate={
-                    id: currUserMetadata!.id,
-                    email: currUserMetadata!.email,
-                    authBy: currUserMetadata!.authBy,
-                    numbOfRaisedBugAllowed: (currUserMetadata!.numbOfRaisedBugAllowed! - 1),
-                    allowedToModifyBugReport: currUserMetadata!.allowedToModifyBugReport,
-                    allowedToDeleteBugReport: currUserMetadata!.allowedToDeleteBugReport,
-                }
-                await axios.put('/api/user/put',currUserMetadataUpdate).then(()=> router.push('/dashboard'))
-            })
+            await axios.put('/api/bug/put',modifiedBugReport).then(updateCurrPrivilege())
         }
     }
     const onSubmitModifyBugReport: SubmitHandler<formFieldTypes> = data => handleModifyBugFormSubmit(data);
    
+    const updateCurrPrivilege = async()=>{
+        let currUserMetadataUpdate={
+            id: currUserMetadata!.id,
+            email: currUserMetadata!.email,
+            authBy: currUserMetadata!.authBy,
+            numbOfRaisedBugAllowed: (currUserMetadata!.numbOfRaisedBugAllowed! - 1),
+            allowedToModifyBugReport: currUserMetadata!.allowedToModifyBugReport,
+            allowedToDeleteBugReport: currUserMetadata!.allowedToDeleteBugReport,
+        }
+        await axios.put('/api/user/put',currUserMetadataUpdate).then(()=> router.push('/dashboard'))
+    }
     const uploadImgFile = async(file: File)=>{
-        console.log('here')
         const maxImgFileSize = 5 //MB
-        if(file.size <= (maxImgFileSize * 1024 * 1024)){
-            
-            const { data, error } = await supabase
-            .storage
-            .from('bug-report-screenshot')
-            .upload(`/${file.name}.${file.type}`, file, {
-                cacheControl: '3600',
-                upsert: false
-            })
-            if(error) console.error(error)
+        if(file.size <= (maxImgFileSize * 8000000)){
+            try {
+                const { data, error } = await supabase.storage
+                .from('bug-report-screenshot')
+                // .upload(`${file.name}`, decode('base64FileData'), {
+                //     contentType: `${file.type}`
+                // })
+                // .from('avatars')
+                .upload(`${file.name}`, file)
+            } catch (error) {
+                console.error(error)
+            }          
         }else{
             alert(`This image is too large. Maximum size:${maxImgFileSize} MB`)
         }
     }
     
     const getImgUrl= async(file:File)=>{
-        const { publicURL, error } = supabase
-        .storage
-        .from('bug-report-screenshot')
-        .getPublicUrl(`/${file.name}.${file.type}`)
-        if(error) console.error(error)
-        return publicURL
+        try {
+            const { publicURL, error } = supabase.storage
+            .from('bug-report-screenshot')
+            .getPublicUrl(`${file.name}`)
+            return publicURL
+        } catch (error) {
+            console.error(error)
+        }
     }
-
   return (
     <>
         <h1>{isNewBug ? "New Bug Report" : "Update Bug Report"}</h1>
-
+        {(!isNewBug && url) ? 
+            <div>
+                <Image src={url} alt={`${title} screenshot`} layout="responsive" width="200" height="200"/>
+            </div>
+        :null}
         <form onSubmit={isNewBug? handleSubmit(onSubmitNewBugReport) : handleSubmit(onSubmitModifyBugReport)}>
             <div>
                 <label>
@@ -173,12 +170,14 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                     
                 </label>
             </div>
-            <div>
-                <label>
-                    Upload Image
-                    <input type="file" accept=".jpg, .jpeg, .png, .webp" {...register("file")}/>
-                </label>
-            </div>
+            {isNewBug ? 
+                <div>
+                    <label>
+                        Upload Image
+                        <input type="file" accept=".jpg, .jpeg, .png, .webp" {...register("file")}/>
+                    </label>
+                </div>
+            :null}
             <button>Submit</button>
         </form>
     </>

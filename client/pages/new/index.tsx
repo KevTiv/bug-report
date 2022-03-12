@@ -5,10 +5,11 @@ import styles from '../../styles/Home.module.scss'
 
 import Form from '../../components/forms'
 import supabase from '../../supabaseLib'
+import prisma from '../../prisma'
 
 
 
-const NewBug: NextPage = ({user}:any) => {
+const NewBug: NextPage = ({user, currUser}:any) => {
   
   return (
     <div className={styles.container}>
@@ -20,7 +21,7 @@ const NewBug: NextPage = ({user}:any) => {
 
       <main className={styles.main}>
         {/* <h1>{user.email}</h1> */}
-        <Form isNewBug={true} author={user.id} />
+        <Form isNewBug={true} author={user.id} currUserMetadata={currUser}/>
       </main>
 
       <footer className={styles.footer}>
@@ -48,6 +49,11 @@ export async function getServerSideProps({ req }:any) {
     // If no user, redirect to index.
     return { props: {}, redirect: { destination: '/', permanent: false } }
   }
+  const currUser = await prisma.user?.findUnique({
+    where:{ 
+      id:user.id
+    }
+  })
   // If there is a user, return it.
-  return { props: { user } }
+  return { props: { user, currUser } }
 }

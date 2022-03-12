@@ -71,7 +71,6 @@ export async function getServerSideProps({ req, query }:any) {
       id:user.id
     }
   })
-  
   return{
     props:{ bugInfo, allUserList, currUser }
   }
