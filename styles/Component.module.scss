@@ -1,0 +1,30 @@
+.mobile__burger__menu__content{
+    display: none;
+    // clip-path: inset(0 0 100% 0);
+}
+.mobile__burger__menu{
+    height: 100%;
+    width: 15vw;
+    position: relative;
+
+    &::before {
+        position: absolute;
+        display: inline-block;
+        content: '';
+        width: 100%;
+        aspect-ratio: 15;
+        background-color: black;
+        top: 35%;
+    }
+    &::after{
+        position: absolute;
+        display: inline-block;
+        content: '';
+        width: 80%;
+        aspect-ratio: 11;
+        background-color: black; 
+        top: 45%;
+        right: 0;
+    }
+    
+}
