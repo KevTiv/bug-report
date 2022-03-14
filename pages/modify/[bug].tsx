@@ -7,8 +7,9 @@ import styles from '../../styles/Home.module.scss'
 import supabase from '../../supabaseLib'
 import { bugType, userMetadataType } from '../../type'
 import Form from '../../components/forms'
+import Nav from '../../components/nav'
 
-const update: NextPage = ({bugInfo, allUserList, currUser}:any) => {
+const update: NextPage = ({bugInfo, allUserList, currUser, user}:any) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [bug, setBug] = useState<bugType>()
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -24,8 +25,9 @@ const update: NextPage = ({bugInfo, allUserList, currUser}:any) => {
         <link rel="icon" href="/bug.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <main>
         {/* <h1>update</h1> */}
+        <Nav page="Modify Bug Report" user={user.user_metadata}/>
         <Form isNewBug={false} id={bug?.id} title={bug?.title} description={bug?.description} location={bug?.location}
           processToReplicate={bug?.processToReplicate} priorityStatus={bug?.priorityStatus} author={bug?.author}
           isResolved={bug?.isResolved} resolvedBy={bug?.resolvedBy} url={bug?.url} allUser={JSON.parse(allUserList)}
@@ -72,6 +74,6 @@ export async function getServerSideProps({ req, query }:any) {
     }
   })
   return{
-    props:{ bugInfo, allUserList, currUser }
+    props:{ bugInfo, allUserList, currUser, user }
   }
 }

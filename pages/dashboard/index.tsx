@@ -2,15 +2,18 @@ import { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { NewButton } from '../../components/actionButtons'
+import {LatestResolvedBugCard, LatestUnresolvedBugCard} from '../../components/bugCard'
 import { Logout } from '../../components/logButtons'
 import Nav from '../../components/nav'
 import prisma from '../../prisma'
 import styles from '../../styles/Home.module.scss'
 
 import supabase from '../../supabaseLib'
+import { bugType } from '../../type'
 
-const Dashboard: NextPage = ({ user }:any) => {
+const Dashboard: NextPage = ({ user, latestResolvedBug, latestUnresolvedBug }:any) => {
 
   return (
     <div className={styles.container}>
@@ -23,6 +26,10 @@ const Dashboard: NextPage = ({ user }:any) => {
       {/* <main className={styles.main}> */}
       <main>
         <Nav page="Dashboard" user={user.user_metadata}/>
+        <NewButton />
+        <LatestResolvedBugCard latestResolvedBug={JSON.parse(latestResolvedBug)}/>
+        <LatestUnresolvedBugCard latestUnresolvedBug={JSON.parse(latestUnresolvedBug)}/>
+
         {/* <h1>Dashboard</h1>
         <h2>Welcome {user.email}</h2> */}
         {/* <Logout/> */}
@@ -48,7 +55,6 @@ export default Dashboard
 
 export async function getServerSideProps({ req }:any) {
   const { user } = await supabase.auth.api.getUserByCookie(req)
-  const axios = require('axios')
   if (!user) {
     // If no user, redirect to index.
     return { props: {}, redirect: { destination: '/', permanent: false } }
@@ -67,7 +73,26 @@ export async function getServerSideProps({ req }:any) {
       }
     })
   }
-  // If there is a user, return it.
-  return { props: { user } }
+  const latestResolvedBug = JSON.stringify(await prisma.current_bug.findMany({
+    where:{
+      isResolved: true
+    },
+    orderBy:{
+      createdAt: 'desc',
+    },
+    take: 3
+  }))
+  const latestUnresolvedBug = JSON.stringify(await prisma.current_bug.findMany({
+    where:{
+      isResolved: false
+    },
+    orderBy:{
+      createdAt: 'desc',
+    },
+    take: 3
+  }))
+  
+  // If there is a {user, latestResolvedBug}, return it.
+  return { props: { user, latestResolvedBug, latestUnresolvedBug } }
 }
 

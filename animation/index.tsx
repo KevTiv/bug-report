@@ -6,44 +6,62 @@ export const mobileBurgerMenuAnimation=(isOpen:boolean)=>{
     let burgerMenuBeforeElem = CSSRulePlugin.getRule(".Component_mobile__burger__menu__50AcV::before")
     let burgerMenuAfterElem = CSSRulePlugin.getRule(".Component_mobile__burger__menu__50AcV::after")
     let burgerMenuContent = document.querySelector("nav ul")
+    let burgerMenuContentLi = document.querySelectorAll("nav ul li")
     const tl = gsap.timeline()
     {isOpen ? 
         tl
         .to(burgerMenuBeforeElem,{
-            rotate: '-45deg',
+            rotate: '60deg',
+            width: '110%',
             duration: 1,
             ease: 'power2.inOut'
         })
         .to(burgerMenuAfterElem,{
-            width: '90%',
-            aspectRatio: 14,
-            rotate: '50deg',
+            rotate: '-60deg',
+            width: '110%',
             duration: 1,
             ease: 'power2.inOut'
         },'-=1')
         .to(burgerMenuContent,{
-            display: 'flex',
-            clipPath: 'inset(0 0 0% 0)',
+            height: '22rem',
             duration: 2,
+            ease: 'power2.inOut'
+        },'-=1')
+        .to(burgerMenuContentLi,{
+            display: 'flex',
+            opacity: 1,
+            duration: 0.4,
+            stagger: 0.2,
             ease: 'power2.inOut'
         },'-=1')
         :
         tl
-        .to(burgerMenuContent,{
-            clipPath: 'inset(0 0 100% 0)',
-            display: 'none',
-            duration: 2,
+        .to([burgerMenuContentLi],{
+            opacity: 0,
+            duration: 0.4,
+            stagger: { 
+                from: 'end',
+                amount: 0.4
+            },
             ease: 'power2.inOut'
+        })
+        .to(burgerMenuContent,{
+            height: '0.25rem',
+            duration: 1,
+            ease: 'power2.out'
+        },'-=0.6')
+        .to([burgerMenuContentLi],{
+            display: 'none',
         })
         .to(burgerMenuBeforeElem,{
             rotate: '0deg',
+            width: '100%',
             duration: 1,
             ease: 'power2.inOut'
         },'-=2')
         .to(burgerMenuAfterElem,{
-            width: '80%',
-            aspectRatio: 11,
             rotate: '0deg',
+            width: '100%',
             duration: 1,
             ease: 'power2.inOut'
         },'-=2')

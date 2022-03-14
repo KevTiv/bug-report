@@ -11,6 +11,7 @@ import {Login, Logout} from '../components/logButtons'
 import { useEffect, useState } from 'react'
 import supabase from '../supabaseLib'
 import Loading from '../components/loading'
+import Dashboard from './dashboard'
 
 const Home: NextPage = () => {
 
@@ -65,7 +66,8 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        {!user ? <Login/> : <Loading/>}
+        {/* {!user ? <Login/> : null} */}
+        <Login/>
         
         {/* <button onClick={()=>handleGitHubLogin()}>Sign In with GitHub</button> */}
       </main>

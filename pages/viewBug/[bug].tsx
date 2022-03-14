@@ -4,10 +4,12 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useState, useEffect, useRef } from 'react'
 import styles from '../../styles/Home.module.scss'
+import fnt from '../../styles/Fonts.module.scss'
 import supabase from '../../supabaseLib'
 import { bugType } from '../../type'
+import Nav from '../../components/nav'
 
-const viewBug:NextPage = ({bugInfo}:any) => {
+const viewBug:NextPage = ({bugInfo, user}:any) => {
     const [bug, setBug] = useState<bugType>()
     useEffect(() => {
       setBug(JSON.parse(bugInfo))
@@ -22,51 +24,51 @@ const viewBug:NextPage = ({bugInfo}:any) => {
         <link rel="icon" href="/bug.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1>{bug?.title} Report</h1>
-        <div>
+      <main className={`dark:text-white`}>
+        <Nav page={`${bug?.title} Bug Report`} user={user.user_metadata}/>
+        <div className="px-2">
             {bug?.url ? 
               <div>
                   <Image src={bug.url} alt={`${bug.title} screenshot`} layout="responsive" width="200" height="200"/>
               </div>
           :null}
           <div>
-              <div>
-                  <h2>Description</h2>
+              <div className="py-3">
+                  <h2 className={`${fnt.title__font} text-2xl`}>Description</h2>
                   <p>{bug?.description}</p>
               </div>
-              <div>
-                  <h2>Location</h2>
+              <div className="py-3">
+                  <h2 className={`${fnt.title__font} text-2xl`}>Location</h2>
                   <p>{bug?.location}</p>
               </div>
-              <div>
-                  <h2>How to replicate</h2>
+              <div className="py-3">
+                  <h2 className={`${fnt.title__font} text-2xl`}>How to replicate</h2>
                   <p>{bug?.processToReplicate}</p>
               </div>
           </div>
           <div>
-              <div>
-                  <h2>Author</h2>
+              <div className="py-3">
+                  <h2 className={`${fnt.title__font} text-2xl`}>Author</h2>
                   <p>{bug?.author}</p>
               </div>
-              <div>
-                  <h2>Resolved</h2>
+              <div className="py-3">
+                  <h2 className={`${fnt.title__font} text-2xl`}>Resolved</h2>
                   <p>{bug?.isResolved ? 'Yes' : 'No'}</p>
               </div>
-              <div>
-                  <h2>Priority</h2>
+              <div className="py-3">
+                  <h2 className={`${fnt.title__font} text-2xl`}>Priority</h2>
                   <p>{bug?.priorityStatus}</p>
               </div>
-              <div>
-                  <h2>Resolved by</h2>
+              <div className="py-3">
+                  <h2 className={`${fnt.title__font} text-2xl`}>Resolved by</h2>
                   <p>{bug?.resolvedBy ? bug?.resolvedBy  : 'No one resolved this bug yet'}</p>
               </div>
-              <div>
-                  <h2>Reported on</h2>
+              <div className="py-3">
+                  <h2 className={`${fnt.title__font} text-2xl`}>Reported on</h2>
                   <p>{bug?.createdAt}</p>
               </div>
-              <div>
-                  <h2>Last modification</h2>
+              <div className="py-3">
+                  <h2 className={`${fnt.title__font} text-2xl`}>Last modification</h2>
                   <p>{bug?.updatedAt}</p>
               </div>
           </div>
@@ -109,6 +111,6 @@ export async function getServerSideProps({ req, query }:any) {
   
 
   return{
-    props:{ bugInfo }
+    props:{ bugInfo, user }
   }
 }

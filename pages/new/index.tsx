@@ -6,6 +6,7 @@ import styles from '../../styles/Home.module.scss'
 import Form from '../../components/forms'
 import supabase from '../../supabaseLib'
 import prisma from '../../prisma'
+import Nav from '../../components/nav'
 
 
 
@@ -19,8 +20,9 @@ const NewBug: NextPage = ({user, currUser}:any) => {
         <link rel="icon" href="/bug.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <main>
         {/* <h1>{user.email}</h1> */}
+        <Nav page="New Report" user={user.user_metadata}/>
         <Form isNewBug={true} author={user.id} currUserMetadata={currUser}/>
       </main>
 

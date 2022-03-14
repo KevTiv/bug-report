@@ -4,6 +4,7 @@ import { ErrorMessage } from '@hookform/error-message'
 import { useRouter } from 'next/router'
 import { formFieldTypes } from "../type"
 import supabase from "../supabaseLib"
+import fnt from '../styles/Fonts.module.scss'
     //TODO change resolved by to a dropdown selection menu with all the user of the app
 
 const Forms = ({isNewBug, id, title, description, location, processToReplicate, priorityStatus,
@@ -97,7 +98,6 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
     }
   return (
     <>
-        <h1>{isNewBug ? "New Bug Report" : "Update Bug Report"}</h1>
         {(!isNewBug && url) ? 
             <div>
                 <Image src={url} alt={`${title} screenshot`} layout="responsive" width="200" height="200"/>
@@ -105,56 +105,60 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
         :null}
         <form onSubmit={isNewBug? handleSubmit(onSubmitNewBugReport) : handleSubmit(onSubmitModifyBugReport)}>
             <div>
-                <label>
-                    Author
-                    <input type="text" placeholder={author} value={author} disabled {...register("author")}/>
+                <label className="flex flex-col ml-2 py-3">
+                    <h2 className={`${fnt.title__font} text-xl`}>Author</h2>
+                    <input className="rounded-md px-1 border-b-4 disabled:bg-black/10" type="text" placeholder={author} value={author} disabled {...register("author")}/>
                 </label>
-                <label>
-                    Title
-                    <input type="text" {...register("title", { required: "This is required" })} placeholder={title? title : ''}/>
+                <label className="flex flex-col ml-2 py-3">
+                    <h2 className={`${fnt.title__font} text-xl`}>Title</h2>
+                    <input className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" type="text" 
+                        {...register("title", { required: "This is required" })} placeholder={title? title : ''}/>
                     <ErrorMessage errors={errors} name="title" />
                 </label>
             </div>
             <div>
-                <label>
-                    Location
-                    <textarea {...register("location", { required: "This is required" })} placeholder={location? location : ''}/>
+                <label className="flex flex-col ml-2 py-3">
+                    <h2 className={`${fnt.title__font} text-xl`}>Location</h2>
+                    <textarea className="h-28 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" 
+                        {...register("location", { required: "This is required" })} placeholder={location? location : ''}/>
                     <ErrorMessage errors={errors} name="location" />
                 </label>
-                <label>
-                    Description
-                    <textarea {...register("description", { required: "This is required" })} placeholder={description? description : ''}/>
+                <label className="flex flex-col ml-2 py-3">
+                    <h2 className={`${fnt.title__font} text-xl`}>Description</h2>
+                    <textarea className="h-28 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" 
+                        {...register("description", { required: "This is required" })} placeholder={description? description : ''}/>
                     <ErrorMessage errors={errors} name="description" />
                 </label>
-                 <label>
-                    How to replicate
-                    <textarea {...register("processToReplicate", { required: "This is required" })} placeholder={processToReplicate? processToReplicate : ''}/>
+                 <label className="flex flex-col ml-2 py-3">
+                     <h2 className={`${fnt.title__font} text-xl`}>How to replicate</h2>
+                    <textarea className="h-28 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" 
+                        {...register("processToReplicate", { required: "This is required" })} placeholder={processToReplicate? processToReplicate : ''}/>
                     <ErrorMessage errors={errors} name="processToReplicate" />
                 </label>
             </div>
             <div>
-                <label>
-                    Priority Status
-                    <select id="priorityStatus" {...register("priorityStatus")} placeholder={priorityStatus? priorityStatus : ''}>
+                <label className="flex flex-col ml-2 py-3">
+                    <h2 className={`${fnt.title__font} text-xl`}>Priority Status</h2>
+                    <select className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" id="priorityStatus" {...register("priorityStatus")} placeholder={priorityStatus? priorityStatus : ''}>
                         <option value="low">LOW</option>
-                        <option value="normal">NORMAL</option>
+                        <option value="medium">MEDIUM</option>
                         <option value="high">HIGH</option>
                     </select>
                 </label>
-                <label>
-                    Resolved
-                    <select id="isBugResolved" {...register("isResolved")} placeholder={isResolved? 'Bug is resolved' : 'Bug is not Resolved'}>
+                <label className="flex flex-col ml-2 py-3">
+                    <h2 className={`${fnt.title__font} text-xl`}>Resolved</h2>
+                    <select className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" id="isBugResolved" {...register("isResolved")} placeholder={isResolved? 'Bug is resolved' : 'Bug is not Resolved'}>
                         <option value="false">Bug is not Resolved</option>
                         <option value="true">Bug is resolved</option>
                     </select>
                 </label>
-                <label>
-                    Resolved By
+                <label className="flex flex-col ml-2 py-3">
+                    <h2 className={`${fnt.title__font} text-xl`}>Resolved By</h2>
                     {isNewBug ? 
-                        <input type="text" disabled {...register("resolvedBy")}/> 
+                        <input  className="rounded-md px-1 border-b-4 disabled:bg-black/10" type="text" disabled {...register("resolvedBy")}/> 
                     : 
-                        // <input type="text" {...register("resolvedBy")} placeholder={resolvedBy}/> //allUser
-                        <select id="resolvedBy" {...register("resolvedBy")} placeholder={resolvedBy}>
+                        // <input className="bg-black/10 rounded-md px-1 border-b-4 border-black/10" type="text" {...register("resolvedBy")} placeholder={resolvedBy}/> //allUser
+                        <select className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" id="resolvedBy" {...register("resolvedBy")} placeholder={resolvedBy}>
                             {allUser?.map((user, index)=>{
                                 return(
                                     <>
@@ -169,13 +173,16 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
             </div>
             {isNewBug ? 
                 <div>
-                    <label>
-                        Upload Image
+                    <label className="flex flex-col ml-2 py-3">
+                        <h2 className={`${fnt.title__font} text-xl`}>Upload Image</h2>
                         <input type="file" accept=".jpg, .jpeg, .png, .webp" {...register("file")}/>
                     </label>
                 </div>
             :null}
-            <button>Submit</button>
+            <div className="flex justify-around items-center py-4">
+                <button className={`${fnt.title__font} py-2 px-4 border-4 rounded-md border-emerald-300 bg-emerald-400 hover:bg-emerald-500`}>Submit</button>
+                <button className={`${fnt.title__font} py-2 px-4 border-4 rounded-md border-red-300 bg-red-400 hover:bg-red-500`} onClick={()=>router.push('/dashboard')}>Cancel</button>
+            </div>
         </form>
     </>
   )

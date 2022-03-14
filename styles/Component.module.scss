@@ -1,10 +1,10 @@
 .mobile__burger__menu__content{
-    display: none;
+    display: flex;
     // clip-path: inset(0 0 100% 0);
 }
 .mobile__burger__menu{
-    height: 100%;
-    width: 15vw;
+    height: 0.75rem;
+    width: 10vw;
     position: relative;
 
     &::before {
@@ -12,19 +12,24 @@
         display: inline-block;
         content: '';
         width: 100%;
-        aspect-ratio: 15;
+        aspect-ratio: 10;
         background-color: black;
-        top: 35%;
+        top: 0;
+        @media (prefers-color-scheme: dark){
+            background-color: white;
+        }
     }
     &::after{
         position: absolute;
         display: inline-block;
         content: '';
-        width: 80%;
+        width: 100%;
         aspect-ratio: 11;
         background-color: black; 
-        top: 45%;
-        right: 0;
+        bottom: 0;
+        @media (prefers-color-scheme: dark) {
+            background-color: white;
+        }
     }
     
 }
