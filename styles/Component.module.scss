@@ -3,8 +3,8 @@
     // clip-path: inset(0 0 100% 0);
 }
 .mobile__burger__menu{
-    height: 0.75rem;
-    width: 10vw;
+    height: 1rem;
+    width: 2.75rem;
     position: relative;
 
     &::before {
@@ -12,7 +12,7 @@
         display: inline-block;
         content: '';
         width: 100%;
-        aspect-ratio: 10;
+        aspect-ratio: 8;
         background-color: black;
         top: 0;
         @media (prefers-color-scheme: dark){
@@ -24,7 +24,7 @@
         display: inline-block;
         content: '';
         width: 100%;
-        aspect-ratio: 11;
+        aspect-ratio: 8;
         background-color: black; 
         bottom: 0;
         @media (prefers-color-scheme: dark) {

@@ -33,7 +33,10 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 isResolved: JSON.parse(`${data.isResolved}`),
                 url: imgUrl
             }
-            await axios.post('/api/bug/post',newBugReport).then(updateCurrPrivilege())
+            await axios.post('/api/bug/post',newBugReport).then(()=>{
+                sessionStorage.setItem('user_most_recent_action', `You successfully created a new bug report: ${data.title}.`)
+                updateCurrPrivilege()
+            })
         }
     }
     const onSubmitNewBugReport: SubmitHandler<formFieldTypes> = data => {handleNewBugFormSubmit(data)};
@@ -51,7 +54,10 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 resolvedBy: data.resolvedBy,
                 isResolved: JSON.parse(`${data.isResolved}`)
             }
-            await axios.put('/api/bug/put',modifiedBugReport).then(updateCurrPrivilege())
+            await axios.put('/api/bug/put',modifiedBugReport).then(()=>{
+                sessionStorage.setItem('user_most_recent_action', `You successfully modified the ${id} - ${data.title} bug report.`)
+                updateCurrPrivilege()
+            })
         }
     }
     const onSubmitModifyBugReport: SubmitHandler<formFieldTypes> = data => handleModifyBugFormSubmit(data);
@@ -65,7 +71,7 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
             allowedToModifyBugReport: currUserMetadata!.allowedToModifyBugReport,
             allowedToDeleteBugReport: currUserMetadata!.allowedToDeleteBugReport,
         }
-        await axios.put('/api/user/put',currUserMetadataUpdate).then(()=> router.push('/dashboard'))
+        await axios.put('/api/user/put',currUserMetadataUpdate).then(()=>router.push('/dashboard'))
     }
     const uploadImgFile = async(file: File)=>{
         const maxImgFileSize = 5 //MB
@@ -103,15 +109,15 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 <Image src={url} alt={`${title} screenshot`} layout="responsive" width="200" height="200"/>
             </div>
         :null}
-        <form onSubmit={isNewBug? handleSubmit(onSubmitNewBugReport) : handleSubmit(onSubmitModifyBugReport)}>
+        <form className="dark:text-white" onSubmit={isNewBug? handleSubmit(onSubmitNewBugReport) : handleSubmit(onSubmitModifyBugReport)}>
             <div>
                 <label className="flex flex-col ml-2 py-3">
                     <h2 className={`${fnt.title__font} text-xl`}>Author</h2>
-                    <input className="rounded-md px-1 border-b-4 disabled:bg-black/10" type="text" placeholder={author} value={author} disabled {...register("author")}/>
+                    <input className="rounded-md px-1 border-b-4 disabled:bg-black/10 dark:disabled:bg-white/10" type="text" placeholder={author} value={author} disabled {...register("author")}/>
                 </label>
                 <label className="flex flex-col ml-2 py-3">
                     <h2 className={`${fnt.title__font} text-xl`}>Title</h2>
-                    <input className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" type="text" 
+                    <input className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400 dark:bg-white/10" type="text" 
                         {...register("title", { required: "This is required" })} placeholder={title? title : ''}/>
                     <ErrorMessage errors={errors} name="title" />
                 </label>
@@ -119,19 +125,19 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
             <div>
                 <label className="flex flex-col ml-2 py-3">
                     <h2 className={`${fnt.title__font} text-xl`}>Location</h2>
-                    <textarea className="h-28 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" 
+                    <textarea className="h-28 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400 dark:bg-white/10" 
                         {...register("location", { required: "This is required" })} placeholder={location? location : ''}/>
                     <ErrorMessage errors={errors} name="location" />
                 </label>
                 <label className="flex flex-col ml-2 py-3">
                     <h2 className={`${fnt.title__font} text-xl`}>Description</h2>
-                    <textarea className="h-28 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" 
+                    <textarea className="h-28 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400 dark:bg-white/10" 
                         {...register("description", { required: "This is required" })} placeholder={description? description : ''}/>
                     <ErrorMessage errors={errors} name="description" />
                 </label>
                  <label className="flex flex-col ml-2 py-3">
                      <h2 className={`${fnt.title__font} text-xl`}>How to replicate</h2>
-                    <textarea className="h-28 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" 
+                    <textarea className="h-28 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400 dark:bg-white/10" 
                         {...register("processToReplicate", { required: "This is required" })} placeholder={processToReplicate? processToReplicate : ''}/>
                     <ErrorMessage errors={errors} name="processToReplicate" />
                 </label>
@@ -139,7 +145,7 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
             <div>
                 <label className="flex flex-col ml-2 py-3">
                     <h2 className={`${fnt.title__font} text-xl`}>Priority Status</h2>
-                    <select className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" id="priorityStatus" {...register("priorityStatus")} placeholder={priorityStatus? priorityStatus : ''}>
+                    <select className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400 dark:bg-white/10" id="priorityStatus" {...register("priorityStatus")} placeholder={priorityStatus? priorityStatus : ''}>
                         <option value="low">LOW</option>
                         <option value="medium">MEDIUM</option>
                         <option value="high">HIGH</option>
@@ -147,7 +153,7 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 </label>
                 <label className="flex flex-col ml-2 py-3">
                     <h2 className={`${fnt.title__font} text-xl`}>Resolved</h2>
-                    <select className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" id="isBugResolved" {...register("isResolved")} placeholder={isResolved? 'Bug is resolved' : 'Bug is not Resolved'}>
+                    <select className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400 dark:bg-white/10" id="isBugResolved" {...register("isResolved")} placeholder={isResolved? 'Bug is resolved' : 'Bug is not Resolved'}>
                         <option value="false">Bug is not Resolved</option>
                         <option value="true">Bug is resolved</option>
                     </select>
@@ -158,7 +164,7 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                         <input  className="rounded-md px-1 border-b-4 disabled:bg-black/10" type="text" disabled {...register("resolvedBy")}/> 
                     : 
                         // <input className="bg-black/10 rounded-md px-1 border-b-4 border-black/10" type="text" {...register("resolvedBy")} placeholder={resolvedBy}/> //allUser
-                        <select className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400" id="resolvedBy" {...register("resolvedBy")} placeholder={resolvedBy}>
+                        <select className="h-9 rounded-md px-1 border-2 border-black/10 focus:ring-1 focus:outline-none focus:ring-sky-400 dark:bg-white/10" id="resolvedBy" {...register("resolvedBy")} placeholder={resolvedBy}>
                             {allUser?.map((user, index)=>{
                                 return(
                                     <>
@@ -181,7 +187,10 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
             :null}
             <div className="flex justify-around items-center py-4">
                 <button className={`${fnt.title__font} py-2 px-4 border-4 rounded-md border-emerald-300 bg-emerald-400 hover:bg-emerald-500`}>Submit</button>
-                <button className={`${fnt.title__font} py-2 px-4 border-4 rounded-md border-red-300 bg-red-400 hover:bg-red-500`} onClick={()=>router.push('/dashboard')}>Cancel</button>
+                <button className={`${fnt.title__font} py-2 px-4 border-4 rounded-md border-red-300 bg-red-400 hover:bg-red-500`} onClick={()=>{
+                    sessionStorage.setItem('user_most_recent_action', `You canceled the following action: ${isNewBug? 'New bug Report' : `Modify '${title}' Report`}`)
+                    router.push('/dashboard')
+                }}>Cancel</button>
             </div>
         </form>
     </>

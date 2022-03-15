@@ -8,8 +8,9 @@ import fnt from '../../styles/Fonts.module.scss'
 import supabase from '../../supabaseLib'
 import { bugType } from '../../type'
 import Nav from '../../components/nav'
+import { ModifyButton, DeleteButton } from '../../components/actionButtons'
 
-const viewBug:NextPage = ({bugInfo, user}:any) => {
+const viewBug:NextPage = ({bugInfo, user, currUserPrivileges}:any) => {
     const [bug, setBug] = useState<bugType>()
     useEffect(() => {
       setBug(JSON.parse(bugInfo))
@@ -24,52 +25,56 @@ const viewBug:NextPage = ({bugInfo, user}:any) => {
         <link rel="icon" href="/bug.ico" />
       </Head>
 
-      <main className={`dark:text-white`}>
+      <main className={`${styles.main} dark:text-white`}>
         <Nav page={`${bug?.title} Bug Report`} user={user.user_metadata}/>
-        <div className="px-2">
+        <div className="w-full px-2 my-2">
             {bug?.url ? 
               <div>
                   <Image src={bug.url} alt={`${bug.title} screenshot`} layout="responsive" width="200" height="200"/>
               </div>
           :null}
           <div>
-              <div className="py-3">
+              <div className="py-3 bg-black/5 dark:bg-white/5">
                   <h2 className={`${fnt.title__font} text-2xl`}>Description</h2>
                   <p>{bug?.description}</p>
               </div>
-              <div className="py-3">
+              <div className="py-3 bg-black/10 dark:bg-white/10">
                   <h2 className={`${fnt.title__font} text-2xl`}>Location</h2>
                   <p>{bug?.location}</p>
               </div>
-              <div className="py-3">
+              <div className="py-3 bg-black/5 dark:bg-white/5">
                   <h2 className={`${fnt.title__font} text-2xl`}>How to replicate</h2>
                   <p>{bug?.processToReplicate}</p>
               </div>
           </div>
           <div>
-              <div className="py-3">
+              <div className="py-3 bg-black/10 dark:bg-white/10">
                   <h2 className={`${fnt.title__font} text-2xl`}>Author</h2>
                   <p>{bug?.author}</p>
               </div>
-              <div className="py-3">
+              <div className="py-3 bg-black/5 dark:bg-white/5">
                   <h2 className={`${fnt.title__font} text-2xl`}>Resolved</h2>
                   <p>{bug?.isResolved ? 'Yes' : 'No'}</p>
               </div>
-              <div className="py-3">
+              <div className="py-3 bg-black/10 dark:bg-white/10">
                   <h2 className={`${fnt.title__font} text-2xl`}>Priority</h2>
                   <p>{bug?.priorityStatus}</p>
               </div>
-              <div className="py-3">
+              <div className="py-3 bg-black/5 dark:bg-white/5">
                   <h2 className={`${fnt.title__font} text-2xl`}>Resolved by</h2>
                   <p>{bug?.resolvedBy ? bug?.resolvedBy  : 'No one resolved this bug yet'}</p>
               </div>
-              <div className="py-3">
+              <div className="py-3 bg-black/10 dark:bg-white/10">
                   <h2 className={`${fnt.title__font} text-2xl`}>Reported on</h2>
                   <p>{bug?.createdAt}</p>
               </div>
-              <div className="py-3">
+              <div className="py-3 bg-black/5 dark:bg-white/5">
                   <h2 className={`${fnt.title__font} text-2xl`}>Last modification</h2>
                   <p>{bug?.updatedAt}</p>
+              </div>
+              <div className="flex justify-center items-center mt-3">
+                <ModifyButton bugId={bug?.id} isPrivilege={currUserPrivileges.allowedToDeleteBugReport}/>
+                <DeleteButton bugId={bug?.id} isPrivilege={currUserPrivileges.allowedToDeleteBugReport}/>
               </div>
           </div>
         </div>
@@ -109,8 +114,17 @@ export async function getServerSideProps({ req, query }:any) {
       }
   })) 
   
+  const currUserPrivileges = await prisma.user.findUnique({
+    where:{
+      id: user.id
+    },
+    select:{
+      allowedToModifyBugReport: true,
+      allowedToDeleteBugReport: true
+    }
+  })
 
   return{
-    props:{ bugInfo, user }
+    props:{ bugInfo, user, currUserPrivileges }
   }
 }

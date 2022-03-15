@@ -1,5 +1,6 @@
 import gsap from 'gsap'
 import CSSRulePlugin from 'gsap/dist/CSSRulePlugin'
+import { RefObject } from 'react'
 
 export const mobileBurgerMenuAnimation=(isOpen:boolean)=>{
     gsap.registerPlugin(CSSRulePlugin)
@@ -10,15 +11,20 @@ export const mobileBurgerMenuAnimation=(isOpen:boolean)=>{
     const tl = gsap.timeline()
     {isOpen ? 
         tl
-        .to(burgerMenuBeforeElem,{
-            rotate: '60deg',
-            width: '110%',
-            duration: 1,
-            ease: 'power2.inOut'
+        .to(burgerMenuAfterElem,{
+            top: 0,
+            duration: 0.6,
+            ease: 'linear'
         })
         .to(burgerMenuAfterElem,{
-            rotate: '-60deg',
-            width: '110%',
+            rotate: '-45deg',
+            // width: '150%',
+            duration: 1,
+            ease: 'power2.inOut'
+        },'-=0.4')
+        .to(burgerMenuBeforeElem,{
+            rotate: '45deg',
+            // width: '150%',
             duration: 1,
             ease: 'power2.inOut'
         },'-=1')
@@ -60,10 +66,21 @@ export const mobileBurgerMenuAnimation=(isOpen:boolean)=>{
             ease: 'power2.inOut'
         },'-=2')
         .to(burgerMenuAfterElem,{
+            top: '80%',
+            // bottom: 0,
             rotate: '0deg',
             width: '100%',
             duration: 1,
             ease: 'power2.inOut'
         },'-=2')
     }
+}
+export const dismissNotification =(notificationRef:RefObject<HTMLSpanElement> )=>{
+    gsap.to(notificationRef?.current,{
+        x: 900,
+        opacity: 0,
+        display: 'none',
+        duration: 1,
+        ease: 'power2.inOut'
+    })
 }

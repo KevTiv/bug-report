@@ -15,6 +15,12 @@ import Dashboard from './dashboard'
 
 const Home: NextPage = () => {
 
+  //TODO styling for tablet and bigger left to adjust
+  //TODO landing page
+  //TODO adding some decorative images
+  //TODO adding some decorative images
+  //TODO error msg when DB is offline
+
   const router = useRouter();
   const fetcher = (url:string, token:string) =>
     fetch(url, {
@@ -45,7 +51,7 @@ const Home: NextPage = () => {
             body: JSON.stringify({ event, session }),
           }).then((res) => {
             res.json()
-            
+            sessionStorage.setItem('user_most_recent_action', `Welcome to your bug report tool!`)
             router.push('/dashboard')
           })
 

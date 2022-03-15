@@ -10,19 +10,21 @@ const Nav=({page, user}:navType)=>{
     const [isOpen, setIsOpen] = useState<boolean>(false)
     let burgerMenuRef = useRef(null)
 
+    const UserSVG=()=>{return <svg className="dark:text-black" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="2rem" height="2rem" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2A10.13 10.13 0 0 0 2 12a10 10 0 0 0 4 7.92V20h.1a9.7 9.7 0 0 0 11.8 0h.1v-.08A10 10 0 0 0 22 12A10.13 10.13 0 0 0 12 2zM8.07 18.93A3 3 0 0 1 11 16.57h2a3 3 0 0 1 2.93 2.36a7.75 7.75 0 0 1-7.86 0zm9.54-1.29A5 5 0 0 0 13 14.57h-2a5 5 0 0 0-4.61 3.07A8 8 0 0 1 4 12a8.1 8.1 0 0 1 8-8a8.1 8.1 0 0 1 8 8a8 8 0 0 1-2.39 5.64z"/><path fill="currentColor" d="M12 6a3.91 3.91 0 0 0-4 4a3.91 3.91 0 0 0 4 4a3.91 3.91 0 0 0 4-4a3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2a1.91 1.91 0 0 1 2-2a1.91 1.91 0 0 1 2 2a1.91 1.91 0 0 1-2 2z"/></svg>}
     const handleBurgerMenuClick=()=>{
         setIsOpen(!isOpen)
         mobileBurgerMenuAnimation(isOpen)
     }
+    useEffect(()=>{mobileBurgerMenuAnimation(false)},[])
     return(
         <>
-            <nav className="flex items-center justify-between h-20 overflow-hidden">
+            <nav className="flex items-center justify-between h-32 w-full overflow-hidden">
                 <h1 className={`${fnt.nav__h1__font} text-4xl dark:text-white `}>{page}</h1>
-                <span className={`${componentStyle.mobile__burger__menu} `} onClick={()=>handleBurgerMenuClick()}></span>
-                <ul ref={burgerMenuRef} className={`${componentStyle.mobile__burger__menu__content} bg-white dark:bg-black absolute w-full h-1 flex-col top-16 z-10 border-b-4 border-black dark:border-white`}>
+                <span className={`${componentStyle.mobile__burger__menu} -translate-x-3`} onClick={()=>handleBurgerMenuClick()}></span>
+                <ul ref={burgerMenuRef} className={`${componentStyle.mobile__burger__menu__content} bg-white dark:bg-black absolute w-full h-1 flex-col top-32 left-0 z-10 border-b-4 border-black dark:border-white`}>
                     <li className={`${fnt.title__font} hidden dark:text-white text-xl my-8 ml-28 relative`}><Link href="/dashboard"><a>Dashboard</a></Link></li>
                     <li className={`${fnt.title__font} hidden dark:text-white text-xl my-8 ml-28 relative`}><Link href="/history"><a>History</a></Link></li>
-                    <li className={`${fnt.title__font} hidden dark:text-white text-xl my-8 ml-16 relative scale-75`}>{user?.user_name}  <Logout/></li>
+                    <li className={`${fnt.title__font} hidden dark:text-white text-xl my-8 w-full justify-center relative scale-75`}><span className="mx-2 px-2 flex items-center"><UserSVG/> {user?.user_name}</span> <Logout/></li>
                 </ul>
             </nav>
         </>

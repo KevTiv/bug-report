@@ -20,7 +20,7 @@ const NewBug: NextPage = ({user, currUser}:any) => {
         <link rel="icon" href="/bug.ico" />
       </Head>
 
-      <main>
+       <main className={styles.main}>
         {/* <h1>{user.email}</h1> */}
         <Nav page="New Report" user={user.user_metadata}/>
         <Form isNewBug={true} author={user.id} currUserMetadata={currUser}/>

@@ -25,7 +25,7 @@ const History: NextPage = ({bugsList, currUserPrivileges, user}:any) => {
         <link rel="icon" href="/bug.ico" />
       </Head>
 
-      <main>
+       <main className={styles.main}>
         <Nav page="Bug History Log" user={user.user_metadata}/>
         <table className="dark:text-white">
           {/* Headers */}
@@ -43,7 +43,7 @@ const History: NextPage = ({bugsList, currUserPrivileges, user}:any) => {
             bugs?.map(bug=>{
               return(
                 <>
-                  <tr key={bug.id} className={`${(bug?.priorityStatus === 'high') ? 'bg-red-300/75 dark:bg-red-500/50' : (bug?.priorityStatus === 'medium') ?'bg-orange-300/75 dark:bg-orange-500/50' : 'bg-emerald-300/75 dark:bg-emerald-500/50'} my-3 border-b-2 border-black/20 dark:border-white/40`}>
+                  <tr key={bug.id} className={`${(bug?.priorityStatus === 'high') ? 'bg-red-200/40 dark:bg-red-600/20' : (bug?.priorityStatus === 'medium') ?'bg-orange-200/40 dark:bg-orange-600/20' : 'bg-emerald-200/40 dark:bg-emerald-600/20'} my-3 border-b-2 border-black/20 dark:border-white/40`}>
                     <td className={`${fnt.text__font} px-2 hidden`}>{bug?.createdAt!.substring(0,10)}</td>
                     <td className={`${fnt.text__font} px-2 hidden`}>{bug?.author}</td>
                     <td className={`${fnt.text__font} px-2 `}>{bug?.title}</td>

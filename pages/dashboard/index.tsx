@@ -7,6 +7,7 @@ import { NewButton } from '../../components/actionButtons'
 import {LatestResolvedBugCard, LatestUnresolvedBugCard} from '../../components/bugCard'
 import { Logout } from '../../components/logButtons'
 import Nav from '../../components/nav'
+import UpdateMsg from '../../components/updateMsg'
 import prisma from '../../prisma'
 import styles from '../../styles/Home.module.scss'
 
@@ -23,9 +24,9 @@ const Dashboard: NextPage = ({ user, latestResolvedBug, latestUnresolvedBug }:an
         <link rel="icon" href="/bug.ico" />
       </Head>
 
-      {/* <main className={styles.main}> */}
-      <main>
+       <main className={styles.main}>
         <Nav page="Dashboard" user={user.user_metadata}/>
+        <UpdateMsg/>
         <NewButton />
         <LatestResolvedBugCard latestResolvedBug={JSON.parse(latestResolvedBug)}/>
         <LatestUnresolvedBugCard latestUnresolvedBug={JSON.parse(latestUnresolvedBug)}/>

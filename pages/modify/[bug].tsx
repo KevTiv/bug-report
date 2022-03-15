@@ -25,7 +25,7 @@ const update: NextPage = ({bugInfo, allUserList, currUser, user}:any) => {
         <link rel="icon" href="/bug.ico" />
       </Head>
 
-      <main>
+       <main className={styles.main}>
         {/* <h1>update</h1> */}
         <Nav page="Modify Bug Report" user={user.user_metadata}/>
         <Form isNewBug={false} id={bug?.id} title={bug?.title} description={bug?.description} location={bug?.location}
