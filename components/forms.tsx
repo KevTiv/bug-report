@@ -109,7 +109,7 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 <Image src={url} alt={`${title} screenshot`} layout="responsive" width="200" height="200"/>
             </div>
         :null}
-        <form className="dark:text-white" onSubmit={isNewBug? handleSubmit(onSubmitNewBugReport) : handleSubmit(onSubmitModifyBugReport)}>
+        <form className="dark:text-white w-full" onSubmit={isNewBug? handleSubmit(onSubmitNewBugReport) : handleSubmit(onSubmitModifyBugReport)}>
             <div>
                 <label className="flex flex-col ml-2 py-3">
                     <h2 className={`${fnt.title__font} text-xl`}>Author</h2>
@@ -186,8 +186,8 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
                 </div>
             :null}
             <div className="flex justify-around items-center py-4">
-                <button className={`${fnt.title__font} py-2 px-4 border-4 rounded-md border-emerald-300 bg-emerald-400 hover:bg-emerald-500`}>Submit</button>
-                <button className={`${fnt.title__font} py-2 px-4 border-4 rounded-md border-red-300 bg-red-400 hover:bg-red-500`} onClick={()=>{
+                <button className={`${fnt.title__font} py-2 px-4 border-2 rounded-md border-emerald-300 dark:border-emerald-500 bg-emerald-400 dark:bg-emerald-700 hover:bg-emerald-500 dark:hover:bg-emerald-900`}>Submit</button>
+                <button className={`${fnt.title__font} py-2 px-4 border-2 rounded-md border-red-300 bg-red-400 dark:bg-red-600 hover:bg-red-500 dark:hover:bg-red-800`} onClick={()=>{
                     sessionStorage.setItem('user_most_recent_action', `You canceled the following action: ${isNewBug? 'New bug Report' : `Modify '${title}' Report`}`)
                     router.push('/dashboard')
                 }}>Cancel</button>

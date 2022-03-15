@@ -15,6 +15,7 @@
         aspect-ratio: 8;
         background-color: black;
         top: 0;
+        border-radius: 1rem;
         @media (prefers-color-scheme: dark){
             background-color: white;
         }
@@ -27,6 +28,7 @@
         aspect-ratio: 8;
         background-color: black; 
         bottom: 0;
+        border-radius: 1rem;
         @media (prefers-color-scheme: dark) {
             background-color: white;
         }
