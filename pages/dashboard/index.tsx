@@ -28,9 +28,10 @@ const Dashboard: NextPage = ({ user, latestResolvedBug, latestUnresolvedBug }:an
         <Nav page="Dashboard" user={user.user_metadata}/>
         <UpdateMsg/>
         <NewButton />
-        <LatestResolvedBugCard latestResolvedBug={JSON.parse(latestResolvedBug)}/>
-        <LatestUnresolvedBugCard latestUnresolvedBug={JSON.parse(latestUnresolvedBug)}/>
-
+        <div className="w-full md:flex md:justify-around">
+          <LatestResolvedBugCard latestResolvedBug={JSON.parse(latestResolvedBug)}/>
+          <LatestUnresolvedBugCard latestUnresolvedBug={JSON.parse(latestUnresolvedBug)}/>
+        </div>
         {/* <h1>Dashboard</h1>
         <h2>Welcome {user.email}</h2> */}
         {/* <Logout/> */}

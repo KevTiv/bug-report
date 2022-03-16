@@ -16,11 +16,10 @@ const UpdateMsg = () => {
   return (
     <>
         {update!=='' ?   
-            <span ref={notificationRef} className={`w-full flex justify-between items-center p-4 mb-4 text-sm text-yellow-700 bg-yellow-200/80 rounded-lg dark:bg-yellow-400/80 dark:text-yellow-800`}>
+            <span ref={notificationRef} className={`w-full flex justify-between items-center p-4 mb-4 text-lg text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800`}>
                 <span className={`${fnt.title__font} ml-2`}>{update}</span>
                 <span className={`cursor-pointer mr-2`} onClick={()=>{
                     dismissNotification(notificationRef) 
-                    setUpdate('')
                 }}><CrossSVG/></span>
             </span>
         :null}

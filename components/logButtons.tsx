@@ -44,7 +44,7 @@ const Logout = () => {
 
   return (
     <>
-      <button className={`${fnt.title__font} mx-2 px-4 py-2 flex rounded-md bg-red-400/30 hover:bg-red-400/60 dark:bg-red-600/40 dark:hover:bg-red-600/80`} onClick={()=> handleSignOut() }> <LogoutSVG/>Sign Out</button>
+      <button className={`${fnt.title__font} flex justify-center items-center mx-2 px-4 py-2 rounded-md bg-red-400/30 hover:bg-red-400/60 dark:bg-red-600/40 dark:hover:bg-red-600/80`} onClick={()=> handleSignOut() }> <LogoutSVG/>Sign Out</button>
     </>
   )
 }

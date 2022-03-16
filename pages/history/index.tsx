@@ -27,7 +27,7 @@ const History: NextPage = ({bugsList, currUserPrivileges, user}:any) => {
 
        <main className={styles.main}>
         <Nav page="Bug History Log" user={user.user_metadata}/>
-        <table className="dark:text-white">
+        <table className="dark:text-white w-full">
           {/* Headers */}
           <tr className="border-b-4 border-black dark:border-white">
             <th className={`${fnt.title__font} hidden mx-1 px-2 `}>Created</th>

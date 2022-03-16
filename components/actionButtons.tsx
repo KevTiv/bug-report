@@ -8,7 +8,7 @@ export const NewButton = ()=>{
     const AddSvg=()=>{ return <svg className="mr-1 text-sky-700 dark:text-sky-200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="2rem" height="2rem" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path fill="currentColor" d="M16 4c6.6 0 12 5.4 12 12s-5.4 12-12 12S4 22.6 4 16S9.4 4 16 4m0-2C8.3 2 2 8.3 2 16s6.3 14 14 14s14-6.3 14-14S23.7 2 16 2z"/><path fill="currentColor" d="M24 15h-7V8h-2v7H8v2h7v7h2v-7h7z"/></svg> }
     return(
         <>
-            <button className={`${fnt.title__font} dark:text-white p-2 mx-1 bg-sky-700/40 dark:bg-sky-200/40 hover:bg-sky-700/60 hover:dark:bg-sky-200/60 rounded-md flex justify-between items-center`} onClick={()=>handleViewAction()}><AddSvg/>{' '}Create a new bug report</button>
+            <button className={`${fnt.title__font} dark:text-white p-2 mx-1 my-4 bg-sky-700/40 dark:bg-sky-200/40 hover:bg-sky-700/60 hover:dark:bg-sky-200/60 rounded-md flex justify-between items-center`} onClick={()=>handleViewAction()}><AddSvg/>{' '}Create a new bug report</button>
             {/* <button className={`${fnt.title__font} dark:text-white p-2 mx-1 bg-sky-700/40 dark:bg-sky-200/40 rounded-md border-4 border-sky-700/40 dark:border-sky-200/40 flex justify-between items-center`} onClick={()=>handleViewAction()}><AddSvg/>{' '}Create a new bug report</button> */}
         </>
     )
@@ -16,10 +16,10 @@ export const NewButton = ()=>{
 const ViewButton = ({bugId}:buttonType)=>{
     const router = useRouter()
     const handleViewAction =()=>router.push(`/viewBug/${bugId}`)
-    const ViewSVG=()=>{return <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="2rem" height="2rem" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><circle cx="16" cy="16" r="4" fill="currentColor"/><path fill="currentColor" d="M30.94 15.66A16.69 16.69 0 0 0 16 5A16.69 16.69 0 0 0 1.06 15.66a1 1 0 0 0 0 .68A16.69 16.69 0 0 0 16 27a16.69 16.69 0 0 0 14.94-10.66a1 1 0 0 0 0-.68ZM16 22.5a6.5 6.5 0 1 1 6.5-6.5a6.51 6.51 0 0 1-6.5 6.5Z"/></svg>}
+    const ViewSVG=()=>{return <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1.5rem" height="1.5rem" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><circle cx="16" cy="16" r="4" fill="currentColor"/><path fill="currentColor" d="M30.94 15.66A16.69 16.69 0 0 0 16 5A16.69 16.69 0 0 0 1.06 15.66a1 1 0 0 0 0 .68A16.69 16.69 0 0 0 16 27a16.69 16.69 0 0 0 14.94-10.66a1 1 0 0 0 0-.68ZM16 22.5a6.5 6.5 0 1 1 6.5-6.5a6.51 6.51 0 0 1-6.5 6.5Z"/></svg>}
     return(
         <>
-            <button className={`m-2 bg-black/5 hover:bg-black/20 dark:bg-white/20 hover:dark:bg-white/40 dark:text-white  w-12 h-12 rounded-md flex justify-center items-center`} onClick={()=>handleViewAction()}><ViewSVG/></button>
+            <button className={`m-2 bg-black/5 hover:bg-black/20 dark:bg-white/20 hover:dark:bg-white/40 dark:text-white  w-10 h-10 rounded-md flex justify-center items-center`} onClick={()=>handleViewAction()}><ViewSVG/></button>
         </>
     )
 }

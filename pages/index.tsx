@@ -15,9 +15,8 @@ import Dashboard from './dashboard'
 
 const Home: NextPage = () => {
 
-  //TODO styling for tablet and bigger left to adjust
+  //TODO styling for tablet and bigger screen left to adjust
   //TODO landing page
-  //TODO adding some decorative images
   //TODO adding some decorative images
   //TODO error msg when DB is offline
 
