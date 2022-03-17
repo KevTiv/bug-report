@@ -19,11 +19,11 @@ body {
   Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   
-  background-color: white;
+  background-color: rgb(202, 202, 202);
   overflow-y: auto;
   overflow-x: hidden;
   @media (prefers-color-scheme: dark) {
-    background-color: black;
+    background-color: #1a1a1a;
   }
 }
 

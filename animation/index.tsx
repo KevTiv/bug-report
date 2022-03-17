@@ -67,14 +67,16 @@ export const landingPageAppear=(
     },'-=0.1')
     .from(personRef.current,{
         clipPath: 'inset(100% 100% 100% 0)',
+        opacity: 0,
         duration: 1,
         ease: 'power2.inOut'
     },'-=0.8')
     .from(ctaRef.current,{
         clipPath: 'inset(100% 0 100% 100%)',
-        duration: 1,
+        opacity: 0,
+        duration: 1.5,
         ease: 'power2.inOut'
-    },'-=1.8')
+    },'-=1.2')
 }
 export const mobileBurgerMenuAnimation=(isOpen:boolean)=>{
     gsap.registerPlugin(CSSRulePlugin)

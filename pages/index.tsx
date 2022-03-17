@@ -95,7 +95,7 @@ const Home: NextPage = () => {
               <h2 className="flex flex-col justify-around items-start mx-16">
                 <span className="relative w-fit">
                   <span ref={trackRef} className={`${fnt.title__font} text-5xl lg:text-7xl scale-150 ml-4`}>Track</span>
-                  <span ref={bug1Ref} className="absolute w-12 top-[-25%] right-[-25%] rotate-[215deg]">
+                  <span ref={bug1Ref} className="absolute w-12 top-[-25%] right-[-15%] rotate-[215deg]">
                     <BugSVG />
                   </span>
                 </span>
@@ -107,7 +107,7 @@ const Home: NextPage = () => {
                 </span>
                 <span className="relative w-fit">
                   <span ref={eliminateRef} className={`${fnt.title__font} text-5xl lg:text-7xl mx-32`}>Eliminate</span>
-                  <span ref={bug3Ref} className="absolute w-8 top-[50%] right-[30%] rotate-[-60deg]">
+                  <span ref={bug3Ref} className="absolute w-8 top-[70%] right-[30%] rotate-[-60deg]">
                     <BugSVG />
                   </span> 
                 </span>
@@ -118,7 +118,7 @@ const Home: NextPage = () => {
               <span ref={personRef} className="scale-75 md:scale-100">
                 <PersonSVG/>
               </span>
-              <h2 ref={ctaRef} className="absolute w-1/3 top-[60%] right-[25%] md:right-[15%] lg:right-0 text-xl bg-white dark:bg-black">Enhance your team response and prevention capabilities with our bug tracking solution</h2>
+              <h2 ref={ctaRef} className="absolute w-1/3 top-[60%] right-[25%] md:right-[15%] lg:right-0 text-xl ">Enhance your team response and prevention capabilities with our bug tracking solution</h2>
               <div ref={btnRef} className="absolute top-[-2.5%] scale-125 ">
                 <Login/>
               </div>
