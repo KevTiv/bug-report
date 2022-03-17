@@ -27,35 +27,40 @@ const History: NextPage = ({bugsList, currUserPrivileges, user}:any) => {
 
        <main className={styles.main}>
         <Nav page="Bug History Log" user={user.user_metadata}/>
-        <table className="dark:text-white w-full">
+        <table className="dark:text-white min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
+        {/* <table className="dark:text-white w-full"> */}
           {/* Headers */}
-          <tr className="border-b-4 border-black dark:border-white">
-            <th className={`${fnt.title__font} hidden mx-1 px-2 `}>Created</th>
-            <th className={`${fnt.title__font} hidden mx-1 px-2 `}>Author ID</th>
-            <th className={`${fnt.title__font} mx-1 px-2 `}>Title</th>
-            <th className={`${fnt.title__font} hidden mx-1 px-2 `}>Description</th>
-            <th className={`${fnt.title__font} mx-1 px-2 `}>Resolved</th>
-            <th className={`${fnt.title__font} mx-1 px-2 `}>Priority</th>
-            <th className={`${fnt.title__font} mx-1 px-2 `}>More Action</th>
-          </tr>
+          <thead className="border-b-2 border-black dark:border-white">
+            <tr>
+              <th scope="col" className={`${fnt.title__font} hidden md:table-cell py-3 px-6 text-xs md:text-base lg:text-lg font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400 `}>Created</th>
+              <th scope="col" className={`${fnt.title__font} hidden lg:table-cell py-3 px-6 text-xs md:text-base lg:text-lg font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400 `}>Author ID</th>
+              <th scope="col" className={`${fnt.title__font} py-3 px-6 text-xs md:text-base lg:text-lg font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400 `}>Title</th>
+              <th scope="col" className={`${fnt.title__font} hidden lg:table-cell py-3 px-6 text-xs md:text-base lg:text-lg font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400 `}>Description</th>
+              <th scope="col" className={`${fnt.title__font} py-3 px-6 text-xs md:text-base lg:text-lg font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400 `}>Resolved</th>
+              <th scope="col" className={`${fnt.title__font} py-3 px-6 text-xs md:text-base lg:text-lg font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400 `}>Priority</th>
+              <th scope="col" className={`${fnt.title__font} py-3 px-6 text-xs md:text-base lg:text-lg font-medium tracking-wider text-left text-gray-700 uppercase dark:text-gray-400 `}>More Action</th>
+            </tr>
+          </thead>
           {/* Body */}
           {
             bugs?.map(bug=>{
               return(
                 <>
-                  <tr key={bug.id} className={`${(bug?.priorityStatus === 'high') ? 'bg-red-200/40 dark:bg-red-600/20' : (bug?.priorityStatus === 'medium') ?'bg-orange-200/40 dark:bg-orange-600/20' : 'bg-emerald-200/40 dark:bg-emerald-600/20'} my-3 border-b-2 border-black/20 dark:border-white/40`}>
-                    <td className={`${fnt.text__font} px-2 hidden`}>{bug?.createdAt!.substring(0,10)}</td>
-                    <td className={`${fnt.text__font} px-2 hidden`}>{bug?.author}</td>
-                    <td className={`${fnt.text__font} px-2 `}>{bug?.title}</td>
-                    <td className={`${fnt.text__font} px-2 hidden`}>{bug?.description}</td>
-                    <td className={`${fnt.text__font} px-2 `}>{bug?.isResolved ? 'Yes' : 'No'}</td>
-                    <td className={`${fnt.text__font} px-2 `}>{bug?.priorityStatus}</td>
-                    <td className="scale-75 flex flex-col justify-center items-center">
-                      <ViewButton   bugId={bug.id}/>
-                      <ModifyButton bugId={bug.id} isPrivilege={currUserPrivileges.allowedToDeleteBugReport}/>
-                      <DeleteButton bugId={bug.id} isPrivilege={currUserPrivileges.allowedToDeleteBugReport}/>
-                    </td>
-                  </tr>
+                  <tbody className="divide-y divide-black dark:divide-white  rounded-lg">
+                    <tr key={bug.id} className={`${(bug?.priorityStatus === 'high') ? 'bg-red-200/60 dark:bg-red-600/40' : (bug?.priorityStatus === 'medium') ?'bg-orange-200/60 dark:bg-orange-600/60' : 'bg-emerald-200/60 dark:bg-emerald-600/40'} my-3`}>
+                      <td className={`${fnt.text__font} py-4 px-6 text-sm font-medium text-gray-900 md:text-md lg:text-base whitespace-nowrap dark:text-white hidden md:table-cell`}>{bug?.createdAt!.substring(0,10)}</td>
+                      <td className={`${fnt.text__font} py-4 px-6 text-sm font-medium text-gray-900 md:text-md lg:text-base whitespace-nowrap dark:text-white hidden lg:table-cell`}>{bug?.author}</td>
+                      <td className={`${fnt.text__font} py-4 px-6 text-sm font-medium text-gray-900 md:text-md lg:text-base whitespace-nowrap dark:text-white `}>{bug?.title}</td>
+                      <td className={`${fnt.text__font} py-4 px-6 text-sm font-medium text-gray-900 md:text-md lg:text-base whitespace-nowrap dark:text-white hidden lg:table-cell`}>{bug?.description}</td>
+                      <td className={`${fnt.text__font} py-4 px-6 text-sm font-medium text-gray-900 md:text-md lg:text-base whitespace-nowrap dark:text-white `}>{bug?.isResolved ? 'Yes' : 'No'}</td>
+                      <td className={`${fnt.text__font} py-4 px-6 text-sm font-medium text-gray-900 md:text-md lg:text-base whitespace-nowrap dark:text-white `}>{bug?.priorityStatus}</td>
+                      <td className="scale-75 flex flex-col justify-center items-center">
+                        <ViewButton   bugId={bug.id}/>
+                        <ModifyButton bugId={bug.id} isPrivilege={currUserPrivileges.allowedToDeleteBugReport}/>
+                        <DeleteButton bugId={bug.id} isPrivilege={currUserPrivileges.allowedToDeleteBugReport}/>
+                      </td>
+                    </tr>
+                  </tbody>
                 </>
               )
             })

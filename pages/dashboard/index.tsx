@@ -7,7 +7,7 @@ import { NewButton } from '../../components/actionButtons'
 import {LatestResolvedBugCard, LatestUnresolvedBugCard} from '../../components/bugCard'
 import { Logout } from '../../components/logButtons'
 import Nav from '../../components/nav'
-import UpdateMsg from '../../components/updateMsg'
+import {UpdateMsg} from '../../components/alertMsg'
 import prisma from '../../prisma'
 import styles from '../../styles/Home.module.scss'
 
