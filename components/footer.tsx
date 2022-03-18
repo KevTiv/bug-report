@@ -10,10 +10,10 @@ const Footer = () => {
             </span>
             <ul className="flex flex-wrap items-center mt-3 text-sm text-black dark:text-white sm:mt-0">
                 <li>
-                    <a href="#" className="mr-4 hover:underline md:mr-6 ">Repository</a>
+                    <a href="https://github.com/KevTiv/bug-tracker" target="_blank" rel="noopener noreferrer" className="mr-4 hover:underline md:mr-6 ">Repository</a>
                 </li>
                 <li>
-                    <a href="#" className="mr-4 hover:underline md:mr-6">Github</a>
+                    <a href="https://github.com/KevTiv" target="_blank" rel="noopener noreferrer" className="mr-4 hover:underline md:mr-6">Github</a>
                 </li>
             </ul>
         </footer>

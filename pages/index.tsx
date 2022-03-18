@@ -97,8 +97,20 @@ const Home: NextPage<Props> = ({isErrorProp}) => {
         <div className="w-full mt-28 dark:text-white">
           <div className={`flex flex-col justify-start items-center w-full`}>
             <h1 ref={titleRef} className={`${fnt.title__font} text-7xl lg:text-9xl scale-125 lg:scale-150`}>
-              <span className="mx-1">Bug</span>
-              <span className="mx-1">Tracker</span>
+              <span className="mx-2">
+                <span>B</span>
+                <span>u</span>
+                <span>g</span>
+              </span>
+              <span className="mx-2">
+                <span>T</span>
+                <span>r</span>
+                <span>a</span>
+                <span>c</span>
+                <span>k</span>
+                <span>e</span>
+                <span>r</span>
+              </span>
             </h1>
             {isError||isErrorFromProp ? <ErrorMsg /> : null}
             <div className="mt-16">

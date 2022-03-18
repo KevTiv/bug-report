@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import { NewButton } from '../../components/actionButtons'
 import {LatestResolvedBugCard, LatestUnresolvedBugCard} from '../../components/bugCard'
 import Nav from '../../components/nav'
@@ -11,6 +10,8 @@ import styles from '../../styles/Home.module.scss'
 import supabase from '../../supabaseLib'
 import { User } from '@supabase/supabase-js'
 import Footer from '../../components/footer'
+import { pageAppear } from '../../animation'
+import { useEffect } from 'react'
 
 
 type Props={
@@ -19,7 +20,9 @@ type Props={
   latestUnresolvedBug: string
 }
 const Dashboard: NextPage<Props> = ({ user, latestResolvedBug, latestUnresolvedBug }) => {
-
+  useEffect(() => {
+    pageAppear()
+  },[])
   return (
     <div className={styles.container}>
       <Head>
