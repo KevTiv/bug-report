@@ -6,13 +6,15 @@ import { useState, useEffect, useRef } from 'react'
 import styles from '../../styles/Home.module.scss'
 import fnt from '../../styles/Fonts.module.scss'
 import supabase from '../../supabaseLib'
-import { bugType } from '../../type'
+import { bugType, viewBugPageProps } from '../../type'
 import Nav from '../../components/nav'
 import { ModifyButton, DeleteButton } from '../../components/actionButtons'
 import Footer from '../../components/footer'
 
-const viewBug:NextPage = ({bugInfo, user, currUserPrivileges}:any) => {
+const viewBug:NextPage<viewBugPageProps> = ({bugInfo, user, currUserPrivileges}) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [bug, setBug] = useState<bugType>()
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
       setBug(JSON.parse(bugInfo))
         
