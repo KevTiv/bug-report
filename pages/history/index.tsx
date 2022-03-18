@@ -1,18 +1,16 @@
 import prisma from '../../prisma'
 import type { NextPage } from 'next'
-import {useRouter} from 'next/router'
 import Head from 'next/head'
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import styles from '../../styles/Home.module.scss'
 import fnt from '../../styles/Fonts.module.scss'
 import supabase from '../../supabaseLib'
-import { bugType } from '../../type'
+import { bugType, historyPagePropsType } from '../../type'
 import { DeleteButton, ModifyButton, ViewButton } from '../../components/actionButtons'
 import Nav from '../../components/nav'
 import Footer from '../../components/footer'
 
-const History: NextPage = ({bugsList, currUserPrivileges, user}:any) => {
+const History: NextPage<historyPagePropsType> = ({bugsList, currUserPrivileges, user}:any) => {
   const [bugs,setBugs] = useState<bugType[]>()
   
   useEffect(() => {

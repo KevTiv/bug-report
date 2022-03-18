@@ -8,10 +8,11 @@ import supabase from '../../supabaseLib'
 import prisma from '../../prisma'
 import Nav from '../../components/nav'
 import Footer from '../../components/footer'
+import { newPageProps } from '../../type'
 
 
 
-const NewBug: NextPage = ({user, currUser}:any) => {
+const NewBug: NextPage<newPageProps> = ({user, currUser}) => {
   
   return (
     <div className={styles.container}>
