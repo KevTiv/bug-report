@@ -66,7 +66,7 @@ export async function getServerSideProps({ req }:any) {
       await prisma.user.create({
         data: {
           id: user.id,
-          email: user.email,
+          email: user.email!,
           authBy: user.app_metadata.provider
         }
       })
