@@ -1,7 +1,6 @@
 import {prisma} from '../../prisma'
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import styles from '../../styles/Home.module.scss'
 import supabase from '../../supabaseLib'
@@ -27,7 +26,6 @@ const update: NextPage<modifyPageProps> = ({bugInfo, allUserList, currUser, user
       </Head>
 
        <main className={styles.main}>
-        {/* <h1>update</h1> */}
         <Nav page="Modify Bug Report" user={user.user_metadata}/>
         <Form isNewBug={false} id={bug?.id} title={bug?.title} description={bug?.description} location={bug?.location}
           processToReplicate={bug?.processToReplicate} priorityStatus={bug?.priorityStatus} author={bug?.author}

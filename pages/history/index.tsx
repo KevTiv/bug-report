@@ -27,7 +27,6 @@ const History: NextPage<historyPagePropsType> = ({bugsList, currUserPrivileges, 
        <main className={styles.main}>
         <Nav page="Bug History Log" user={user.user_metadata}/>
         <table className="dark:text-white min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
-        {/* <table className="dark:text-white w-full"> */}
           {/* Headers */}
           <thead className="border-b-2 border-black dark:border-white">
             <tr>
