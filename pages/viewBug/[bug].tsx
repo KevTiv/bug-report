@@ -9,6 +9,7 @@ import supabase from '../../supabaseLib'
 import { bugType } from '../../type'
 import Nav from '../../components/nav'
 import { ModifyButton, DeleteButton } from '../../components/actionButtons'
+import Footer from '../../components/footer'
 
 const viewBug:NextPage = ({bugInfo, user, currUserPrivileges}:any) => {
     const [bug, setBug] = useState<bugType>()
@@ -80,18 +81,7 @@ const viewBug:NextPage = ({bugInfo, user, currUserPrivileges}:any) => {
         </div>
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <Footer />
     </div>
   )
 }

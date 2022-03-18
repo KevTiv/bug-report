@@ -1,20 +1,24 @@
-import { AxiosResponse } from 'axios'
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useEffect, useState } from 'react'
 import { NewButton } from '../../components/actionButtons'
 import {LatestResolvedBugCard, LatestUnresolvedBugCard} from '../../components/bugCard'
-import { Logout } from '../../components/logButtons'
 import Nav from '../../components/nav'
 import {UpdateMsg} from '../../components/alertMsg'
 import prisma from '../../prisma'
 import styles from '../../styles/Home.module.scss'
 
 import supabase from '../../supabaseLib'
-import { bugType } from '../../type'
+import { User } from '@supabase/supabase-js'
+import Footer from '../../components/footer'
 
-const Dashboard: NextPage = ({ user, latestResolvedBug, latestUnresolvedBug }:any) => {
+
+type Props={
+  user: User,
+  latestResolvedBug: string,
+  latestUnresolvedBug: string
+}
+const Dashboard: NextPage<Props> = ({ user, latestResolvedBug, latestUnresolvedBug }) => {
 
   return (
     <div className={styles.container}>
@@ -32,23 +36,9 @@ const Dashboard: NextPage = ({ user, latestResolvedBug, latestUnresolvedBug }:an
           <LatestResolvedBugCard latestResolvedBug={JSON.parse(latestResolvedBug)}/>
           <LatestUnresolvedBugCard latestUnresolvedBug={JSON.parse(latestUnresolvedBug)}/>
         </div>
-        {/* <h1>Dashboard</h1>
-        <h2>Welcome {user.email}</h2> */}
-        {/* <Logout/> */}
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <Footer />
     </div>
   )
 }
@@ -56,6 +46,7 @@ const Dashboard: NextPage = ({ user, latestResolvedBug, latestUnresolvedBug }:an
 export default Dashboard
 
 export async function getServerSideProps({ req }:any) {
+
   const { user } = await supabase.auth.api.getUserByCookie(req)
   if (!user) {
     // If no user, redirect to index.
@@ -63,17 +54,28 @@ export async function getServerSideProps({ req }:any) {
   }
 
   //Check if current user info are present in DB, if not store current user info
-  const isUserRegisteredInDB = await prisma.user.findUnique({
+  let isUserRegisteredInDB 
+  try {
+    isUserRegisteredInDB = await prisma.user.findUnique({
     where:{ id: user.id}
   })
+  } catch (error) {
+    return { props: {}, redirect: { destination: '/error', permanent: false } }
+  }
+  
   if(!isUserRegisteredInDB){
-    await prisma.user.create({
-      data: {
-        id: user.id,
-        email: user.email,
-        authBy: user.app_metadata.provider
-      }
-    })
+    try {
+      await prisma.user.create({
+        data: {
+          id: user.id,
+          email: user.email,
+          authBy: user.app_metadata.provider
+        }
+      })
+    } catch (error) {
+      return { props: {}, redirect: { destination: '/error', permanent: false } }
+    }
+    
   }
   const latestResolvedBug = JSON.stringify(await prisma.current_bug.findMany({
     where:{

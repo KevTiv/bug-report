@@ -3,12 +3,12 @@ import fnt from '../styles/Fonts.module.scss'
 import components from '../styles/Component.module.scss'
 import { dismissNotification } from '../animation'
 
-const CrossSVG = () => {return <svg className="dark:text-red-800" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1.25rem" height="1.25rem" preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64"><path fill="currentColor" d="M62 10.571L53.429 2L32 23.429L10.571 2L2 10.571L23.429 32L2 53.429L10.571 62L32 40.571L53.429 62L62 53.429L40.571 32z"/></svg>}
 
 
 export const UpdateMsg = () => {
     const [update, setUpdate] = useState<string>('')
     let notificationRef = useRef<HTMLSpanElement>(null)
+    const CrossSVG = () => {return <svg className="dark:text-blue-800" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1.25rem" height="1.25rem" preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64"><path fill="currentColor" d="M62 10.571L53.429 2L32 23.429L10.571 2L2 10.571L23.429 32L2 53.429L10.571 62L32 40.571L53.429 62L62 53.429L40.571 32z"/></svg>}
 
     useEffect(() =>{
         let mostRecentUpdate = sessionStorage.getItem('user_most_recent_action')
@@ -30,6 +30,7 @@ export const UpdateMsg = () => {
 }
 
 export const ErrorMsg = ({error}:any) => {
+    const CrossSVG = () => {return <svg className="dark:text-red-800" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1.25rem" height="1.25rem" preserveAspectRatio="xMidYMid meet" viewBox="0 0 64 64"><path fill="currentColor" d="M62 10.571L53.429 2L32 23.429L10.571 2L2 10.571L23.429 32L2 53.429L10.571 62L32 40.571L53.429 62L62 53.429L40.571 32z"/></svg>}
     let notificationRef = useRef<HTMLSpanElement>(null)
     
   return (

@@ -8,6 +8,7 @@ import supabase from '../../supabaseLib'
 import { bugType, userMetadataType } from '../../type'
 import Form from '../../components/forms'
 import Nav from '../../components/nav'
+import Footer from '../../components/footer'
 
 const update: NextPage = ({bugInfo, allUserList, currUser, user}:any) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -34,18 +35,7 @@ const update: NextPage = ({bugInfo, allUserList, currUser, user}:any) => {
           currUserMetadata={currUser}/>
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <Footer />
     </div>
   )
 }

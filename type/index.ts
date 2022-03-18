@@ -45,11 +45,14 @@ export type navType={
     user: { 
         avatar_url? : string,
         email? : string,
-        email_verified: true,
+        email_verified?: true,
         iss? : string,
         preferred_username? : string,
         provider_id? : string,
         sub? : string,
         user_name? : string
     }
+}
+export type errContextType = {
+    isError: boolean
 }
