@@ -4,7 +4,7 @@ import { NewButton } from '../../components/actionButtons'
 import {LatestResolvedBugCard, LatestUnresolvedBugCard} from '../../components/bugCard'
 import Nav from '../../components/nav'
 import {UpdateMsg} from '../../components/alertMsg'
-import prisma from '../../prisma'
+import {prisma} from '../../prisma'
 import styles from '../../styles/Home.module.scss'
 
 import supabase from '../../supabaseLib'
