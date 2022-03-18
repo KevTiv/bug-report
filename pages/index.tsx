@@ -16,12 +16,9 @@ import { landingPageAppear } from '../animation'
 import { BugSVG, PersonSVG } from '../utils/svg'
 import Footer from '../components/footer'
 
-type Props={
-  isErrorProp: boolean
-}
-const Home: NextPage<Props> = ({isErrorProp}) => {
+
+const Home: NextPage= () => {
   const [isError, setIsError] = useState<boolean>(false)
-  const [isErrorFromProp, setIsErrorFromProp] = useState<boolean>(false)
 
   let titleRef = useRef<HTMLHeadingElement>(null)
   let trackRef = useRef<HTMLSpanElement>(null)
@@ -51,11 +48,8 @@ const Home: NextPage<Props> = ({isErrorProp}) => {
 
     
     useEffect(() => {
-      console.log('isErrorProp',isErrorProp)
 
       landingPageAppear(titleRef, trackRef, findRef, eliminateRef, bug1Ref, bug2Ref, bug3Ref, btnRef, personRef, ctaRef)
-
-      // setIsErrorFromProp(props.isErrorProp)
       const { data: authListener } = supabase.auth.onAuthStateChange(
         (event, session) => {
           if (event === 'PASSWORD_RECOVERY') setAuthView('update_password')
@@ -112,7 +106,7 @@ const Home: NextPage<Props> = ({isErrorProp}) => {
                 <span>r</span>
               </span>
             </h1>
-            {isError||isErrorFromProp ? <ErrorMsg /> : null}
+            {isError ? <ErrorMsg /> : null}
             <div className="mt-16">
               <h2 className="flex flex-col justify-around items-start mx-16">
                 <span className="relative w-fit">
