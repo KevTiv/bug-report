@@ -1,9 +1,9 @@
-import { bugType } from '../type'
+import { bugCardType, bugType } from '../type'
 import fnt from '../styles/Fonts.module.scss'
 import { ViewButton } from './actionButtons'
 import { ResolvedSVG, UnresolvedSVG } from '../utils/svg'
 
-export const LatestResolvedBugCard = ({latestResolvedBug}:bugType[]) => {
+export const LatestResolvedBugCard = ({latestResolvedBug}:bugCardType) => {
   return (
     <>
         {/* <div className="w-full p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700"> */}
@@ -25,7 +25,7 @@ export const LatestResolvedBugCard = ({latestResolvedBug}:bugType[]) => {
     </>
   )
 }
-export const LatestUnresolvedBugCard = ({latestUnresolvedBug}:bugType[]) => {
+export const LatestUnresolvedBugCard = ({latestUnresolvedBug}:bugCardType) => {
   return (
     <>
         <div className="flex flex-col justify-between w-full md:w-[45%] border-2 my-1.5 border-red-600/10 dark:border-red-200/10 rounded-md bg-red-600/30 dark:bg-red-200/20 dark:text-white py-2">

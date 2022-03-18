@@ -102,4 +102,3 @@ export async function getServerSideProps({ req }:any) {
   // If there is a {user, latestResolvedBug}, return it.
   return { props: { user, latestResolvedBug, latestUnresolvedBug } }
 }
-

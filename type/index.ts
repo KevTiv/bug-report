@@ -56,3 +56,7 @@ export type navType={
 export type errContextType = {
     isError: boolean
 }
+export type bugCardType = {
+    latestResolvedBug? : bugType[],
+    latestUnresolvedBug? : bugType[],
+}
