@@ -12,14 +12,9 @@ import { User } from '@supabase/supabase-js'
 import Footer from '../../components/footer'
 import { pageAppear } from '../../animation'
 import { useEffect } from 'react'
+import { dashboardPropsType } from '../../type'
 
-
-type Props={
-  user: User,
-  latestResolvedBug: string,
-  latestUnresolvedBug: string
-}
-const Dashboard: NextPage<Props> = ({ user, latestResolvedBug, latestUnresolvedBug }) => {
+const Dashboard: NextPage<dashboardPropsType> = ({ user, latestResolvedBug, latestUnresolvedBug }) => {
   useEffect(() => {
     pageAppear()
   },[])
@@ -102,4 +97,3 @@ export async function getServerSideProps({ req }:any) {
   // If there is a {user, latestResolvedBug}, return it.
   return { props: { user, latestResolvedBug, latestUnresolvedBug } }
 }
-

@@ -1,3 +1,5 @@
+import { User } from "@supabase/supabase-js"
+
 export type formFieldTypes = {
     isNewBug? : boolean, 
     id? : number,
@@ -10,7 +12,7 @@ export type formFieldTypes = {
     isResolved? : boolean,
     resolvedBy? : string,
     url? : string,
-    file? : File,
+    file? : File[],
     currUserMetadata? :userMetadataType
     allUser? : userMetadataType[],
 }
@@ -55,4 +57,39 @@ export type navType={
 }
 export type errContextType = {
     isError: boolean
+}
+export type bugCardType = {
+    latestResolvedBug? : bugType[],
+    latestUnresolvedBug? : bugType[],
+}
+export type dashboardPropsType={
+  user : User,
+  latestResolvedBug : string,
+  latestUnresolvedBug : string
+}
+export type historyPagePropsType={
+  bugsList : string,
+  currUserPrivileges :{
+    allowedToModifyBugReport : boolean,
+      allowedToDeleteBugReport : boolean
+  },
+  user : User
+}
+export type modifyPageProps={
+  bugInfo: string,
+  allUserList: string,
+  currUser: User,
+  user: User
+}
+export type newPageProps={
+  user: User,
+  currUser: User,
+}
+export type viewBugPageProps={
+  bugInfo: string,
+  user: User,
+  currUserPrivileges: {
+    allowedToDeleteBugReport: boolean,
+    allowedToModifyBugReport: boolean,
+  },
 }

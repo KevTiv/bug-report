@@ -5,12 +5,12 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import styles from '../../styles/Home.module.scss'
 import supabase from '../../supabaseLib'
-import { bugType, userMetadataType } from '../../type'
+import { bugType, modifyPageProps } from '../../type'
 import Form from '../../components/forms'
 import Nav from '../../components/nav'
 import Footer from '../../components/footer'
 
-const update: NextPage = ({bugInfo, allUserList, currUser, user}:any) => {
+const update: NextPage<modifyPageProps> = ({bugInfo, allUserList, currUser, user}) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [bug, setBug] = useState<bugType>()
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -39,7 +39,6 @@ const update: NextPage = ({bugInfo, allUserList, currUser, user}:any) => {
     </div>
   )
 }
-
 export default update
 
 export async function getServerSideProps({ req, query }:any) {
