@@ -36,3 +36,23 @@ export type bugType={
     updatedAt? : string,
     url? : string,
 }
+export type buttonType={
+    bugId? : number,
+    isPrivilege? : boolean
+}
+export type navType={
+    page? : string,
+    user: { 
+        avatar_url? : string,
+        email? : string,
+        email_verified?: true,
+        iss? : string,
+        preferred_username? : string,
+        provider_id? : string,
+        sub? : string,
+        user_name? : string
+    }
+}
+export type errContextType = {
+    isError: boolean
+}

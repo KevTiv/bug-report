@@ -1,0 +1,37 @@
+.mobile__burger__menu__content{
+    display: flex;
+    // clip-path: inset(0 0 100% 0);
+}
+.mobile__burger__menu{
+    height: 1rem;
+    width: 2.75rem;
+    position: relative;
+
+    &::before {
+        position: absolute;
+        display: inline-block;
+        content: '';
+        width: 100%;
+        aspect-ratio: 8;
+        background-color: black;
+        top: 0;
+        border-radius: 1rem;
+        @media (prefers-color-scheme: dark){
+            background-color: white;
+        }
+    }
+    &::after{
+        position: absolute;
+        display: inline-block;
+        content: '';
+        width: 100%;
+        aspect-ratio: 8;
+        background-color: black; 
+        bottom: 0;
+        border-radius: 1rem;
+        @media (prefers-color-scheme: dark) {
+            background-color: white;
+        }
+    }
+    
+}

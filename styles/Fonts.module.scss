@@ -1,0 +1,16 @@
+@font-face {
+    font-family: bebasNeue;
+    src: url("../utils/font/BebasNeue-Regular.otf") format("opentype");
+}
+
+.nav__h1__font{
+    font-family: 'bebasNeue',
+    serif;
+    text-transform: uppercase;
+    // letter-spacing: -0.1rem;
+}
+.title__font{
+    font-family: 'bebasNeue',
+    sans-serif;
+    text-transform: uppercase;
+}
