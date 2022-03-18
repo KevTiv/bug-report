@@ -92,7 +92,7 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
         }
     }
     
-    const getImgUrl= async(file:File)=>{
+    const getImgUrl= async(file: File)=>{
         try {
             const { publicURL, error } = supabase.storage
             .from('bug-report-screenshot')
@@ -208,7 +208,8 @@ const Forms = ({isNewBug, id, title, description, location, processToReplicate, 
             {isNewBug ? 
                 <div>
                     <label className={`${fnt.title__font} block mb-2 text-sm md:text-lg text-gray-500 dark:text-gray-400" htmlFor="bug_screenshot`}>Upload file</label>
-                    <input className="block py-2.5 px-0 w-full text-sm md:text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" aria-describedby="bug_screenshot" type="file" accept=".jpg, .jpeg, .png, .webp" {...register("file")}/>
+                    <input className="block py-2.5 px-0 w-full text-sm md:text-lg text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                        aria-describedby="bug_screenshot" type="file" accept=".jpg, .jpeg, .png, .webp" {...register("file")}/>
                     <div className="mt-1 text-sm md:text-lg text-gray-500 dark:text-gray-300" id="bug_screenshot">A bug screenshot may be useful for your team to understand the bug issue</div>
                 </div>
             :null}

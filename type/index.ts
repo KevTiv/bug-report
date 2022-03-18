@@ -12,7 +12,7 @@ export type formFieldTypes = {
     isResolved? : boolean,
     resolvedBy? : string,
     url? : string,
-    file? : File,
+    file? : File[],
     currUserMetadata? :userMetadataType
     allUser? : userMetadataType[],
 }
