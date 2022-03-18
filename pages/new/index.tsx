@@ -5,7 +5,7 @@ import styles from '../../styles/Home.module.scss'
 
 import Form from '../../components/forms'
 import supabase from '../../supabaseLib'
-import prisma from '../../prisma'
+import {prisma} from '../../prisma'
 import Nav from '../../components/nav'
 import Footer from '../../components/footer'
 import { newPageProps } from '../../type'
