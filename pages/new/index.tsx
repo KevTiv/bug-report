@@ -23,7 +23,6 @@ const NewBug: NextPage<newPageProps> = ({user, currUser}) => {
       </Head>
 
        <main className={styles.main}>
-        {/* <h1>{user.email}</h1> */}
         <Nav page="New Report" user={user.user_metadata}/>
         <Form isNewBug={true} author={user.id} currUserMetadata={currUser}/>
       </main>
@@ -40,7 +39,7 @@ export async function getServerSideProps({ req }:any) {
   
   if (!user) {
     // If no user, redirect to index.
-    return { props: {}, redirect: { destination: '/', permanent: false } }
+    return { props: {}, redirect: { destination: 'https://bug-tracker-nine.vercel.app/', permanent: false } }
   }
   const currUser = await prisma.user?.findUnique({
     where:{ 
