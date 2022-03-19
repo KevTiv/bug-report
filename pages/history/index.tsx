@@ -78,7 +78,7 @@ export async function getServerSideProps({ req }:any) {
   const { user } = await supabase.auth.api.getUserByCookie(req)
   if (!user) {
     // If no user, redirect to index.
-    return { props: {}, redirect: { destination: 'https://bug-tracker-nine.vercel.app/', permanent: false } }
+    return { props: {}, redirect: { destination: '/', permanent: false } }
   }
   // The JSON is stringify because of NextJS restriction on passing JSON DateTime
   const bugsList = JSON.stringify(await prisma.current_bug.findMany()) 

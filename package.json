@@ -1,6 +1,7 @@
 {
   "name": "bug-tracker",
   "version": "0.1.0",
+ "homepage": "kevtiv-bugtracker.vercel.app",
   "private": true,
   "scripts": {
     "dev": "next dev",

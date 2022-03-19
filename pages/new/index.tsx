@@ -39,7 +39,7 @@ export async function getServerSideProps({ req }:any) {
   
   if (!user) {
     // If no user, redirect to index.
-    return { props: {}, redirect: { destination: 'https://bug-tracker-nine.vercel.app/', permanent: false } }
+    return { props: {}, redirect: { destination: '/', permanent: false } }
   }
   const currUser = await prisma.user?.findUnique({
     where:{ 
