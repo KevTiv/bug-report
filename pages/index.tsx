@@ -65,7 +65,7 @@ const Home: NextPage= () => {
           }).then((res) => {
             res.json()
             sessionStorage.setItem('user_most_recent_action', `Welcome to your bug report tool!`)
-            router.push('/dashboard')
+            router.push('https://bug-tracker-nine.vercel.app/dashboard')
           }).catch(()=>{
             setIsError(true)
           })
