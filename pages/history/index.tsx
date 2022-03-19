@@ -24,7 +24,7 @@ const History: NextPage<historyPagePropsType> = ({bugsList, currUserPrivileges, 
         <link rel="icon" href="/bug.ico" />
       </Head>
 
-       <main className={styles.main}>
+       <main className={`${styles.main} px-11`}>
         <Nav page="Bug History Log" user={user.user_metadata}/>
         <table className="dark:text-white min-w-full divide-y divide-gray-200 table-fixed dark:divide-gray-700">
           {/* Headers */}

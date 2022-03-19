@@ -9,7 +9,7 @@
     // background-color: orange;
     &::before {
         position: absolute;
-        display: block;
+        display: inline-block;
         content: '';
         width: 100%;
         aspect-ratio: 8;
@@ -22,7 +22,7 @@
     }
     &::after{
         position: absolute;
-        display: block;
+        display: inline-block;
         content: '';
         width: 100%;
         aspect-ratio: 8;
