@@ -3,18 +3,18 @@
     // clip-path: inset(0 0 100% 0);
 }
 .mobile__burger__menu{
-    height: 1rem;
+    height: 3rem;
     width: 2.75rem;
     position: relative;
-
+    // background-color: orange;
     &::before {
         position: absolute;
-        display: inline-block;
+        display: block;
         content: '';
         width: 100%;
         aspect-ratio: 8;
         background-color: black;
-        top: 0;
+        top: 30%;
         border-radius: 1rem;
         @media (prefers-color-scheme: dark){
             background-color: white;
@@ -22,12 +22,12 @@
     }
     &::after{
         position: absolute;
-        display: inline-block;
+        display: block;
         content: '';
         width: 100%;
         aspect-ratio: 8;
         background-color: black; 
-        bottom: 0;
+        bottom: 30%;
         border-radius: 1rem;
         @media (prefers-color-scheme: dark) {
             background-color: white;

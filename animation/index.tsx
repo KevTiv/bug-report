@@ -5,7 +5,7 @@ import { RefObject } from 'react'
 export const pageAppear=()=>{
     gsap.from(document.querySelector('body'),{
         opacity: 0,
-        duration: 0.1,
+        duration: 0.5,
         ease: 'linear'
     })
 }
@@ -29,7 +29,7 @@ export const landingPageAppear=(
     tl
     .from(body,{
         opacity: 0,
-        duration: 0.1
+        duration: 0.75
     })
     .from(titleRef.current!.querySelectorAll('span span'),{
         y:35,
@@ -93,7 +93,7 @@ export const errorPageAppear=(oopsRef: RefObject<HTMLSpanElement>, wrongRef: Ref
     tl
     .from(body,{
         opacity: 0,
-        duration: 0.5,
+        duration: 0.75,
         ease: 'linear'
     })
     .from(oopsRef.current!.querySelectorAll('span'),{
@@ -119,27 +119,23 @@ export const errorPageAppear=(oopsRef: RefObject<HTMLSpanElement>, wrongRef: Ref
         ease: 'power3.inOut'
     },'-=3')
 }
-export const mobileBurgerMenuAnimation=(isOpen:boolean)=>{
+export const burgerMenuAnimation=(isOpen:boolean)=>{
     gsap.registerPlugin(CSSRulePlugin)
-    let burgerMenuBeforeElem = CSSRulePlugin.getRule(".Component_mobile__burger__menu__50AcV::before")
-    let burgerMenuAfterElem = CSSRulePlugin.getRule(".Component_mobile__burger__menu__50AcV::after")
+    let burgerMenuBeforeElem = CSSRulePlugin.getRule(".Component_mobile__burger__menu__50AcV:before")
+    let burgerMenuAfterElem = CSSRulePlugin.getRule(".Component_mobile__burger__menu__50AcV:after")
     let burgerMenuContent = document.querySelector("nav ul")
     let burgerMenuContentLi = document.querySelectorAll("nav ul li")
     const tl = gsap.timeline()
     {isOpen ? 
         tl
         .to(burgerMenuAfterElem,{
-            top: 0,
-            duration: 0.6,
-            ease: 'linear'
-        })
-        .to(burgerMenuAfterElem,{
+            bottom: '50%',
             rotate: '-45deg',
-            // width: '150%',
-            duration: 1,
+            duration: 1.4,
             ease: 'power2.inOut'
-        },'-=0.4')
+        })
         .to(burgerMenuBeforeElem,{
+            top: '50%',
             rotate: '45deg',
             // width: '150%',
             duration: 1,
@@ -177,13 +173,14 @@ export const mobileBurgerMenuAnimation=(isOpen:boolean)=>{
             display: 'none',
         })
         .to(burgerMenuBeforeElem,{
+            top: '30%',
             rotate: '0deg',
             width: '100%',
             duration: 1,
             ease: 'power2.inOut'
         },'-=2')
         .to(burgerMenuAfterElem,{
-            top: '80%',
+            bottom: '30%',
             // bottom: 0,
             rotate: '0deg',
             width: '100%',
