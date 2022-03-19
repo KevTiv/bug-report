@@ -130,13 +130,15 @@ export const burgerMenuAnimation=(isOpen:boolean)=>{
         tl
         .to(burgerMenuAfterElem,{
             bottom: '50%',
-            rotate: '-45deg',
+            // rotate: '-45deg',
+            transform: 'rotate(-45deg)',
             duration: 1.4,
             ease: 'power2.inOut'
         })
         .to(burgerMenuBeforeElem,{
             top: '50%',
-            rotate: '45deg',
+            // rotate: '45deg',
+            transform: 'rotate(45deg)',
             // width: '150%',
             duration: 1,
             ease: 'power2.inOut'
@@ -174,7 +176,8 @@ export const burgerMenuAnimation=(isOpen:boolean)=>{
         })
         .to(burgerMenuBeforeElem,{
             top: '30%',
-            rotate: '0deg',
+            transform: 'rotate(0deg)',
+            // rotate: '0deg',
             width: '100%',
             duration: 1,
             ease: 'power2.inOut'
@@ -182,7 +185,8 @@ export const burgerMenuAnimation=(isOpen:boolean)=>{
         .to(burgerMenuAfterElem,{
             bottom: '30%',
             // bottom: 0,
-            rotate: '0deg',
+            transform: 'rotate(0deg)',
+            // rotate: '0deg',
             width: '100%',
             duration: 1,
             ease: 'power2.inOut'
