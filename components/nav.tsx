@@ -22,8 +22,8 @@ const Nav=({page, user}:navType)=>{
                 <h1 className={`${fnt.nav__h1__font} text-4xl md:text-6xl dark:text-white `}>{page}</h1>
                 <span className={`${componentStyle.mobile__burger__menu} -translate-x-3`} onClick={()=>handleBurgerMenuClick()}></span>
                 <ul ref={burgerMenuRef} className={`${componentStyle.mobile__burger__menu__content} bg-[#fffcf2] dark:bg-[#252422] absolute w-full h-1 flex-col top-32 left-0 z-10 border-b-2 rounded-lg border-black dark:border-white`}>
-                    <li className={`${fnt.title__font} hidden dark:text-white text-xl md:text-3xl my-8 ml-28 relative`}><Link href="https://bug-tracker-nine.vercel.app/dashboard"><a>Dashboard</a></Link></li>
-                    <li className={`${fnt.title__font} hidden dark:text-white text-xl md:text-3xl my-8 ml-28 relative`}><Link href="https://bug-tracker-nine.vercel.app/history"><a>History</a></Link></li>
+                    <li className={`${fnt.title__font} hidden dark:text-white text-xl md:text-3xl my-8 ml-28 relative`}><Link href="/dashboard"><a>Dashboard</a></Link></li>
+                    <li className={`${fnt.title__font} hidden dark:text-white text-xl md:text-3xl my-8 ml-28 relative`}><Link href="/history"><a>History</a></Link></li>
                     <li className={`${fnt.title__font} hidden dark:text-white text-xl md:text-3xl my-8 w-full justify-center relative scale-75`}><span className="mx-2 px-2 flex items-center"><UserSVG/> {user?.user_name}</span> <Logout/></li>
                 </ul>
             </nav>

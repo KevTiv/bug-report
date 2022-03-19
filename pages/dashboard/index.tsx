@@ -58,7 +58,7 @@ export async function getServerSideProps({ req }:any) {
     where:{ id: user.id}
   })
   } catch (error) {
-    return { props: {}, redirect: { destination: 'https://bug-tracker-nine.vercel.app/error', permanent: false } }
+    return { props: {}, redirect: { destination: '/error', permanent: false } }
   }
   
   if(!isUserRegisteredInDB){
@@ -71,7 +71,7 @@ export async function getServerSideProps({ req }:any) {
         }
       })
     } catch (error) {
-      return { props: {}, redirect: { destination: 'https://bug-tracker-nine.vercel.app/error', permanent: false } }
+      return { props: {}, redirect: { destination: '/error', permanent: false } }
     }
     
   }
