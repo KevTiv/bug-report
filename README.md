@@ -6,6 +6,9 @@
 ![website screenshot](https://github.com/KevTiv/bug-tracker/blob/main/img_src/img4.svg)
 ![website screenshot](https://github.com/KevTiv/bug-tracker/blob/main/img_src/img5.svg)
 
+# Live demo
+https://bug-tracker-nine.vercel.app/
+
 # Description
 The is web application project was created to produce an easy online solution for a team to track bugs in their codebase. The project has reached its MVP (minimum viable product) goal of producing a product that can store bug information, such as name, description, resolved status, priority status, date of creation, and if available a screenshot image in a PostgreSQL database. The project was built using Typescript. The front end was built using NextJS, Sass, and TailwindCSS. The back end was built with PrismaJS as the ORM (Object-relational mapping) tool used to communicate with a PostgreSQL database hosted on the Supabase platform. For this application, I took advantage of the NextJS getServerSideProps and API functionality to build the bridge between the client-side and the backend database.
 
